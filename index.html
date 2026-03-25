@@ -224,14 +224,22 @@
   <div class="section" id="dashboard">
     <div class="section-title"><div class="section-num">3</div>PLダッシュボード（メイン画面）</div>
 
+    <!-- ===== 月別ビュー ===== -->
+    <div style="background:#f0f2f5;border-radius:12px;padding:4px;margin-bottom:24px;text-align:center;">
+      <span style="font-size:13px;color:#7f8c8d;font-weight:700;">📅 月別ビュー — 選んだ月のPL明細 + 従業員詳細</span>
+    </div>
+
     <div class="card" style="padding:0;overflow:hidden;">
       <!-- タブ -->
       <div style="padding:16px 24px;border-bottom:1px solid #eee;background:#fafbfc;">
         <div style="margin-bottom:8px;">
           <div class="tab-row" style="margin-bottom:8px;">
+            <div class="tab month" style="background:#2c3e50;color:white;font-weight:700;opacity:0.4;">9期 年間</div>
             <div class="tab month">1月</div>
             <div class="tab month active">2月</div>
             <div class="tab month">3月</div>
+            <div class="tab month" style="opacity:0.4;">4月</div>
+            <div class="tab month" style="opacity:0.4;">5月</div>
           </div>
           <div class="tab-row" style="margin-bottom:0;">
             <div class="tab active">東日本橋</div>
@@ -253,28 +261,6 @@
           <div class="kpi-card kpi-red"><div class="kpi-label">人件費合計</div><div class="kpi-value">¥1,268,070</div><div class="kpi-sub">売上比 44.5%</div></div>
           <div class="kpi-card kpi-orange"><div class="kpi-label">経費合計</div><div class="kpi-value">¥1,499,657</div><div class="kpi-sub">売上比 52.6%</div></div>
           <div class="kpi-card kpi-green"><div class="kpi-label">営業利益</div><div class="kpi-value">¥82,273</div><div class="kpi-sub">利益率 2.9%</div></div>
-        </div>
-
-        <!-- グラフ埋め込み -->
-        <div class="grid-2" style="margin-bottom:24px;">
-          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
-            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">📈 売上推移</h4>
-            <div style="height:200px;"><canvas id="chart-revenue-dash"></canvas></div>
-          </div>
-          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
-            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">👥 会員数推移</h4>
-            <div style="height:200px;"><canvas id="chart-members-dash"></canvas></div>
-          </div>
-        </div>
-        <div class="grid-2" style="margin-bottom:24px;">
-          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
-            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">💰 人件費率推移</h4>
-            <div style="height:200px;"><canvas id="chart-labor-dash"></canvas></div>
-          </div>
-          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
-            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">🏪 店舗別 営業利益</h4>
-            <div style="height:200px;"><canvas id="chart-stores-dash"></canvas></div>
-          </div>
         </div>
 
         <!-- PL -->
@@ -318,7 +304,93 @@
     </div>
 
     <div class="highlight-box">
-      <strong>これが会議資料そのもの。</strong>プロジェクターに映すか印刷するだけ。店舗タブ×月タブで切り替え。人件費をクリックすると従業員別の金額・時間が展開される。
+      <strong>月別ビュー = その月のPL明細。</strong>グラフは出さず、数字に集中できる。従業員ドリルダウンも月別ビューで展開。
+    </div>
+
+    <!-- ===== 年間ビュー ===== -->
+    <div style="background:#f0f2f5;border-radius:12px;padding:4px;margin-bottom:24px;text-align:center;">
+      <span style="font-size:13px;color:#7f8c8d;font-weight:700;">📊 年間ビュー — 「9期 年間」タブを選んだ場合の画面</span>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="padding:16px 24px;border-bottom:1px solid #eee;background:#fafbfc;">
+        <div style="margin-bottom:8px;">
+          <div class="tab-row" style="margin-bottom:8px;">
+            <div class="tab month active" style="background:#2c3e50;color:white;font-weight:700;">9期 年間</div>
+            <div class="tab month" style="opacity:0.5;">1月</div>
+            <div class="tab month" style="opacity:0.5;">2月</div>
+            <div class="tab month" style="opacity:0.5;">3月</div>
+          </div>
+          <div class="tab-row" style="margin-bottom:0;">
+            <div class="tab active">東日本橋</div>
+            <div class="tab">船橋</div>
+            <div class="tab">春日</div>
+            <div class="tab">巣鴨</div>
+            <div class="tab">祖師ヶ谷大蔵</div>
+            <div class="tab">下北沢</div>
+            <div class="tab">中目黒</div>
+            <div class="tab" style="border-left:2px solid #ddd;margin-left:8px;padding-left:20px;">全体</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px;">
+        <!-- 年間KPI -->
+        <div class="kpi-row">
+          <div class="kpi-card kpi-blue"><div class="kpi-label">年間売上</div><div class="kpi-value">¥16,252,000</div><div class="kpi-sub">9期 累計（9月〜2月）</div></div>
+          <div class="kpi-card kpi-red"><div class="kpi-label">年間人件費</div><div class="kpi-value">¥7,393,070</div><div class="kpi-sub">売上比 45.5%</div></div>
+          <div class="kpi-card kpi-orange"><div class="kpi-label">年間経費</div><div class="kpi-value">¥8,347,930</div><div class="kpi-sub">売上比 51.4%</div></div>
+          <div class="kpi-card kpi-green"><div class="kpi-label">年間営業利益</div><div class="kpi-value">¥511,000</div><div class="kpi-sub">利益率 3.1%</div></div>
+        </div>
+
+        <!-- 推移グラフ -->
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">📈 月別売上推移</h4>
+            <div style="height:220px;"><canvas id="chart-revenue-dash"></canvas></div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">👥 会員数推移</h4>
+            <div style="height:220px;"><canvas id="chart-members-dash"></canvas></div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">💰 売上 vs 人件費 推移</h4>
+            <div style="height:220px;"><canvas id="chart-labor-dash"></canvas></div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">🏪 店舗別 営業利益（年間累計）</h4>
+            <div style="height:220px;"><canvas id="chart-stores-dash"></canvas></div>
+          </div>
+        </div>
+
+        <!-- 年間PL -->
+        <h3 style="font-size:15px;margin-bottom:12px;">📋 東日本橋スタジオ — 9期 年間累計 PL</h3>
+        <table>
+          <thead><tr><th>項目</th><th class="num">年間累計</th><th class="num">月平均</th><th class="num">売上比</th></tr></thead>
+          <tbody>
+            <tr class="section-row"><td colspan="4">＜売上＞</td></tr>
+            <tr><td>月会費収入</td><td class="num">14,080,000</td><td class="num">2,346,667</td><td class="num" style="color:#95a5a6;">86.6%</td></tr>
+            <tr><td>その他収入</td><td class="num">1,890,000</td><td class="num">315,000</td><td class="num" style="color:#95a5a6;">11.6%</td></tr>
+            <tr><td>自販機手数料収入</td><td class="num">282,000</td><td class="num">47,000</td><td class="num" style="color:#95a5a6;">1.7%</td></tr>
+            <tr class="subtotal"><td>売上合計</td><td class="num positive">16,252,000</td><td class="num">2,708,667</td><td class="num">100%</td></tr>
+            <tr class="section-row"><td colspan="4">＜人件費＞</td></tr>
+            <tr><td>正社員給与</td><td class="num">3,269,190</td><td class="num">544,865</td><td class="num" style="color:#95a5a6;">20.1%</td></tr>
+            <tr><td>契約社員給与</td><td class="num">4,123,880</td><td class="num">687,313</td><td class="num" style="color:#95a5a6;">25.4%</td></tr>
+            <tr class="subtotal"><td>人件費合計</td><td class="num negative">7,393,070</td><td class="num">1,232,178</td><td class="num">45.5%</td></tr>
+            <tr class="section-row"><td colspan="4">＜経費＞</td></tr>
+            <tr><td>賃借料</td><td class="num">854,640</td><td class="num">142,440</td><td class="num" style="color:#95a5a6;">5.3%</td></tr>
+            <tr><td>その他経費</td><td class="num">7,493,290</td><td class="num">1,248,882</td><td class="num" style="color:#95a5a6;">46.1%</td></tr>
+            <tr class="subtotal"><td>経費合計</td><td class="num negative">8,347,930</td><td class="num">1,391,322</td><td class="num">51.4%</td></tr>
+            <tr class="total"><td>営業利益</td><td class="num positive">511,000</td><td class="num">85,167</td><td class="num">3.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="highlight-box green">
+      <strong>月別 vs 年間の使い分け：</strong>「2月」を選ぶとその月のPL詳細＋従業員ドリルダウン。「9期 年間」を選ぶと推移グラフ＋年間累計PL。会議ではまず年間で全体傾向を確認→気になる月をクリックして詳細を見る流れ。
     </div>
   </div>
 
@@ -360,23 +432,21 @@
   <div class="section" id="charts">
     <div class="section-title"><div class="section-num orange">5</div>グラフ・可視化</div>
 
-    <p style="font-size:14px;color:#7f8c8d;margin-bottom:16px;">グラフはPLダッシュボードの中に埋め込み済み（上のセクション3を参照）。KPIカードの直下に4つのグラフが並び、その下にPL明細が続く構成。</p>
-
     <div class="card">
-      <h3>ダッシュボード1画面の構成（上から順に）</h3>
+      <h3>月別 vs 年間 — 表示内容の違い</h3>
       <table>
-        <thead><tr><th>エリア</th><th>内容</th></tr></thead>
+        <thead><tr><th></th><th>月別ビュー（例: 2月）</th><th>年間ビュー（例: 9期）</th></tr></thead>
         <tbody>
-          <tr><td><strong>① タブ</strong></td><td>月切り替え（1月/2月/3月...） × 店舗切り替え（東日本橋/船橋.../全体）</td></tr>
-          <tr><td><strong>② KPIカード</strong></td><td>売上合計・人件費合計・経費合計・営業利益の4つ</td></tr>
-          <tr><td><strong>③ グラフ4つ</strong></td><td>売上推移（積み上げ棒）/ 会員数推移（折れ線）/ 人件費率推移 / 店舗別営業利益</td></tr>
-          <tr><td><strong>④ PL明細</strong></td><td>売上→人件費→経費→営業利益。人件費をクリックで従業員ドリルダウン</td></tr>
+          <tr><td><strong>KPIカード</strong></td><td>その月の売上・人件費・経費・営業利益</td><td>年間累計の売上・人件費・経費・営業利益</td></tr>
+          <tr><td><strong>グラフ</strong></td><td>なし（数字に集中）</td><td>売上推移・会員数推移・人件費率・店舗別利益の4つ</td></tr>
+          <tr><td><strong>PL明細</strong></td><td>その月の全科目</td><td>年間累計 + 月平均</td></tr>
+          <tr><td><strong>従業員ドリルダウン</strong></td><td>あり（その月の各従業員の金額・時間）</td><td>なし（年間は集計のみ）</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="highlight-box green">
-      <strong>1画面で全部見える。</strong>スクロールするだけでKPI→グラフ→PL詳細→従業員別まで、会議で必要な情報がすべて揃う。
+      <strong>会議の流れ：</strong>まず「9期 年間」で全体傾向をグラフで確認 → 気になる月をクリック → その月の詳細PL + 従業員別を見る。
     </div>
   </div>
 
