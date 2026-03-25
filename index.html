@@ -4,307 +4,120 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI業務自動化システム — PLダッシュボード設計図解</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --primary: #2c3e50;
-    --accent: #3498db;
-    --purple: #9b59b6;
-    --green: #0f9d58;
-    --orange: #e67e22;
-    --red: #e74c3c;
-    --teal: #1abc9c;
-    --bg: #f0f3f5;
-    --card-bg: #ffffff;
-    --text: #2c3e50;
-    --text-muted: #7f8c8d;
-    --border: #e2e8f0;
-    --shadow: 0 4px 6px rgba(0,0,0,0.05);
-    --shadow-hover: 0 10px 15px rgba(0,0,0,0.1);
-    --radius: 12px;
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.7;
-  }
-  .header {
-    background: linear-gradient(135deg, var(--primary), #1a252f);
-    color: white; padding: 60px 40px; text-align: center;
-  }
-  .header h1 { font-size: 30px; margin-bottom: 10px; letter-spacing: 1px; }
-  .header .subtitle { font-size: 16px; opacity: 0.85; margin-bottom: 20px; }
-  .header .meta {
-    display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
-    font-size: 13px; opacity: 0.75;
-  }
-  .nav {
-    background: white; border-bottom: 1px solid var(--border);
-    padding: 12px 40px; position: sticky; top: 0; z-index: 100;
-    overflow-x: auto; white-space: nowrap;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  }
-  .nav a {
-    display: inline-block; color: var(--text-muted); text-decoration: none;
-    font-size: 13px; padding: 6px 14px; border-radius: 20px; transition: all 0.2s;
-  }
-  .nav a:hover { background: var(--primary); color: white; }
-  .main { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-  .section {
-    background: var(--card-bg); border-radius: var(--radius);
-    box-shadow: var(--shadow); margin-bottom: 30px; overflow: hidden;
-    transition: box-shadow 0.3s;
-  }
-  .section:hover { box-shadow: var(--shadow-hover); }
-  .section-header {
-    padding: 20px 30px; font-size: 20px; font-weight: bold; color: white;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .section-header .num {
-    background: rgba(255,255,255,0.25); width: 32px; height: 32px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px;
-  }
-  .section-body { padding: 30px; }
-  .bg-blue { background: var(--accent); }
-  .bg-purple { background: var(--purple); }
-  .bg-green { background: var(--green); }
-  .bg-orange { background: var(--orange); }
-  .bg-red { background: var(--red); }
-  .bg-teal { background: var(--teal); }
-  .bg-primary { background: var(--primary); }
+  body { font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.7; }
 
-  .styled-table {
-    width: 100%; border-collapse: collapse; font-size: 14px; margin: 15px 0;
-  }
-  .styled-table th {
-    background: #f8f9fa; padding: 12px 16px; text-align: left;
-    font-weight: bold; border-bottom: 2px solid var(--border);
-    font-size: 13px; color: var(--text-muted);
-  }
-  .styled-table td {
-    padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top;
-  }
-  .styled-table tr:last-child td { border-bottom: none; }
-  .styled-table tr:hover td { background: #f8f9fa; }
+  .header { background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 50px 0 40px; text-align: center; }
+  .header h1 { font-size: 30px; font-weight: 300; letter-spacing: 2px; }
+  .header .subtitle { font-size: 14px; opacity: 0.8; margin-top: 8px; }
+  .header .meta { display: flex; justify-content: center; gap: 24px; font-size: 12px; opacity: 0.6; margin-top: 16px; }
 
-  .flow-vertical {
-    display: flex; flex-direction: column; align-items: center; gap: 0; padding: 10px 0;
-  }
-  .flow-step {
-    background: white; border: 2px solid var(--border); border-radius: 10px;
-    padding: 18px 28px; width: 100%; max-width: 620px; text-align: center;
-  }
-  .flow-step.blue { border-color: var(--accent); background: #eaf6ff; }
-  .flow-step.green { border-color: var(--green); background: #e6f4ea; }
-  .flow-step.purple { border-color: var(--purple); background: #f5eef8; }
-  .flow-step.orange { border-color: var(--orange); background: #fef5e7; }
-  .flow-step-icon { font-size: 26px; margin-bottom: 4px; }
-  .flow-step-title { font-size: 15px; font-weight: bold; margin-bottom: 4px; }
-  .flow-step-desc { font-size: 13px; color: var(--text-muted); }
-  .flow-arrow { font-size: 24px; color: #bdc3c7; padding: 6px 0; }
+  .nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 12px 40px; position: sticky; top: 0; z-index: 100; overflow-x: auto; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  .nav a { display: inline-block; color: #7f8c8d; text-decoration: none; font-size: 13px; padding: 6px 14px; border-radius: 20px; transition: all 0.2s; }
+  .nav a:hover { background: #3498db; color: white; }
 
-  .highlight-box {
-    background: #eaf6ff; border-left: 4px solid var(--accent);
-    padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; font-size: 14px;
-  }
-  .highlight-box.green { background: #e6f4ea; border-left-color: var(--green); }
-  .highlight-box.orange { background: #fef5e7; border-left-color: var(--orange); }
-  .highlight-box.red { background: #fdedec; border-left-color: var(--red); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
 
-  .badge {
-    display: inline-block; font-size: 11px; padding: 3px 10px;
-    border-radius: 20px; font-weight: bold; margin: 2px;
-  }
-  .badge-auto { background: var(--green); color: white; }
-  .badge-manual { background: var(--orange); color: white; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 20px; font-weight: 600; color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 3px solid #3498db; display: flex; align-items: center; gap: 10px; }
+  .section-num { background: #3498db; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .section-num.green { background: #27ae60; }
+  .section-num.orange { background: #f39c12; }
+  .section-num.red { background: #e74c3c; }
+  .section-num.purple { background: #9b59b6; }
+  .section-num.dark { background: #2c3e50; }
 
-  .branch-targets {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 10px; width: 100%;
-  }
-  .branch-target {
-    background: #f8f9fa; border: 2px solid var(--border); border-radius: 8px;
-    padding: 12px 8px; text-align: center; font-size: 13px; font-weight: bold;
-    position: relative;
-  }
-  .branch-target::before {
-    content: ''; position: absolute; top: -12px; left: 50%;
-    width: 2px; height: 12px; background: var(--accent);
-  }
-  .branch-target .sub {
-    font-weight: normal; color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px;
-  }
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+  .kpi-label { font-size: 12px; color: #7f8c8d; letter-spacing: 1px; }
+  .kpi-value { font-size: 28px; font-weight: 700; margin: 6px 0; }
+  .kpi-sub { font-size: 12px; color: #95a5a6; }
+  .kpi-blue .kpi-value { color: #3498db; }
+  .kpi-green .kpi-value { color: #27ae60; }
+  .kpi-red .kpi-value { color: #e74c3c; }
+  .kpi-orange .kpi-value { color: #f39c12; }
 
-  /* ===== ダッシュボードモック ===== */
-  .dash {
-    background: #1a1a2e; border-radius: 12px; overflow: hidden; color: white;
-  }
-  .dash-topbar {
-    background: #16213e; padding: 14px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .dash-topbar-left { display: flex; align-items: center; gap: 12px; }
-  .dash-topbar-title { font-weight: bold; font-size: 16px; }
-  .dash-topbar-right { display: flex; gap: 8px; }
-  .dash-tab {
-    padding: 6px 14px; border-radius: 6px; font-size: 12px;
-    cursor: default; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5);
-  }
-  .dash-tab.active { background: var(--accent); color: white; }
-  .dash-store-tabs {
-    padding: 8px 20px; display: flex; gap: 6px; overflow-x: auto;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .dash-store-tab {
-    padding: 6px 14px; border-radius: 20px; font-size: 12px;
-    cursor: default; color: rgba(255,255,255,0.5);
-  }
-  .dash-store-tab.active { background: rgba(255,255,255,0.12); color: white; font-weight: bold; }
-  .dash-body { padding: 20px; }
-  .dash-kpi-row {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px;
-  }
-  .dash-kpi {
-    background: rgba(255,255,255,0.06); border-radius: 8px; padding: 14px; text-align: center;
-  }
-  .dash-kpi .label { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-  .dash-kpi .value { font-size: 22px; font-weight: bold; }
-  .dash-kpi .value.blue { color: #3498db; }
-  .dash-kpi .value.green { color: #2ecc71; }
-  .dash-kpi .value.red { color: #e74c3c; }
-  .dash-kpi .value.orange { color: #e67e22; }
+  .chart-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }
+  .chart-card h3 { font-size: 15px; color: #2c3e50; margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 300px; }
 
-  .dash-pl {
-    background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden;
-  }
-  .dash-pl-header {
-    padding: 12px 16px; font-weight: bold; font-size: 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .dash-pl table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-    font-variant-numeric: tabular-nums;
-  }
-  .dash-pl th {
-    text-align: left; padding: 8px 16px; color: rgba(255,255,255,0.4);
-    font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .dash-pl th.num { text-align: right; }
-  .dash-pl td { padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .dash-pl td.num { text-align: right; }
-  .dash-pl td.label { color: rgba(255,255,255,0.7); }
-  .dash-pl tr.section-row td {
-    padding-top: 14px; font-weight: bold; font-size: 12px;
-    color: rgba(255,255,255,0.4); letter-spacing: 1px;
-  }
-  .dash-pl tr.subtotal td { font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); }
-  .dash-pl tr.total td {
-    font-weight: bold; font-size: 14px;
-    border-top: 2px solid rgba(255,255,255,0.2);
-    padding-top: 12px; padding-bottom: 12px;
-  }
-  .dash-pl .filled { color: white; }
-  .dash-pl .empty { color: rgba(255,255,255,0.15); font-style: italic; }
-  .dash-pl .positive { color: #2ecc71; }
-  .dash-pl .negative { color: #e74c3c; }
-  .dash-status-row {
-    display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
-  }
-  .dash-status-chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px; border-radius: 20px; font-size: 11px;
-  }
-  .dash-status-chip.done { background: rgba(46,204,113,0.15); color: #2ecc71; }
-  .dash-status-chip.pending { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
 
-  /* ===== アプリ取込画面 ===== */
-  .app-mock {
-    border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; font-size: 13px;
-  }
-  .app-topbar {
-    background: var(--accent); color: white; padding: 14px 20px;
-    font-weight: bold; font-size: 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .app-body { background: #f8fafc; padding: 24px; }
-  .app-upload {
-    border: 2px dashed #bdc3c7; border-radius: 10px;
-    padding: 24px; text-align: center; background: white; margin-bottom: 12px;
-  }
-  .app-upload-icon { font-size: 36px; margin-bottom: 6px; color: #bdc3c7; }
-  .app-upload-text { font-size: 14px; color: var(--text-muted); }
-  .app-upload-text strong { color: var(--accent); }
-  .app-input-row {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px;
-  }
-  .app-input {
-    background: white; border: 1px solid var(--border); border-radius: 8px; padding: 12px;
-  }
-  .app-input-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-  .app-input-value { font-size: 14px; font-weight: bold; }
-  .app-btn {
-    display: block; width: 100%; padding: 14px; text-align: center;
-    background: var(--accent); color: white; border: none; border-radius: 8px;
-    font-size: 16px; font-weight: bold; cursor: default;
-    box-shadow: 0 2px 8px rgba(52,152,219,0.3);
-  }
+  .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }
+  .card h3 { font-size: 15px; color: #2c3e50; margin-bottom: 16px; }
 
-  /* ===== アラートモック ===== */
-  .alert-mock {
-    background: white; border: 2px solid var(--orange); border-radius: 12px;
-    overflow: hidden; max-width: 480px; margin: 16px auto;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-  }
-  .alert-header {
-    background: var(--orange); color: white; padding: 12px 20px;
-    font-weight: bold; font-size: 14px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .alert-body { padding: 20px; font-size: 14px; }
-  .alert-field {
-    display: flex; align-items: center; gap: 12px; margin: 8px 0;
-    padding: 8px 12px; background: #f8f9fa; border-radius: 6px;
-  }
-  .alert-field-label { font-size: 12px; color: var(--text-muted); min-width: 80px; }
-  .alert-field-value { font-weight: bold; }
-  .alert-field-select {
-    background: white; border: 1px solid var(--border); border-radius: 4px;
-    padding: 4px 8px; font-size: 13px;
-  }
-  .alert-actions {
-    display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end;
-  }
-  .alert-btn {
-    padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: bold;
-    cursor: default; border: none;
-  }
-  .alert-btn.primary { background: var(--accent); color: white; }
-  .alert-btn.secondary { background: #f1f3f4; color: var(--text-muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #dee2e6; }
+  th.num { text-align: right; }
+  td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:hover td { background: #f8f9fa; }
+  tr.section-row td { padding-top: 14px; font-weight: 700; color: #7f8c8d; font-size: 12px; letter-spacing: 1px; background: white !important; }
+  tr.subtotal td { font-weight: 700; border-top: 2px solid #dee2e6; }
+  tr.total td { font-weight: 700; font-size: 15px; border-top: 3px solid #2c3e50; background: #f8f9fa !important; }
+  .positive { color: #27ae60; }
+  .negative { color: #e74c3c; }
 
-  .icon-list { list-style: none; padding: 0; }
-  .icon-list li {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px;
-  }
-  .icon-list li:last-child { border-bottom: none; }
-  .icon-dot {
-    width: 8px; height: 8px; border-radius: 50%; margin-top: 7px; flex-shrink: 0;
-  }
+  /* ドリルダウン */
+  .drill-toggle { cursor: pointer; color: #3498db; font-weight: 600; }
+  .drill-toggle:hover { text-decoration: underline; }
+  .drill-detail { background: #f8fafc; }
+  .drill-detail td { padding-left: 36px; font-size: 12px; color: #555; }
+  .drill-detail td:first-child { border-left: 3px solid #3498db; }
 
-  .footer {
-    text-align: center; padding: 40px; color: var(--text-muted); font-size: 13px;
-  }
+  /* 取込画面 */
+  .upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  .upload-box { border: 2px dashed #ccc; border-radius: 12px; padding: 20px; text-align: center; background: white; transition: all 0.2s; }
+  .upload-box.done { border-color: #27ae60; border-style: solid; background: #f0fdf4; }
+  .upload-box .icon { font-size: 32px; margin-bottom: 6px; }
+  .upload-box .title { font-size: 14px; font-weight: 700; }
+  .upload-box .desc { font-size: 12px; color: #7f8c8d; margin-top: 4px; }
+  .upload-box .status { font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .upload-box .status.done { color: #27ae60; }
+  .upload-box .status.pending { color: #bdc3c7; }
 
-  @media (max-width: 900px) {
-    .dash-kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .app-input-row { grid-template-columns: 1fr; }
-    .header h1 { font-size: 24px; }
-  }
-  @media print {
-    .nav { display: none; }
-    .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
-    .dash { color-adjust: exact; -webkit-print-color-adjust: exact; }
-  }
+  /* タブモック */
+  .tab-row { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab { padding: 8px 16px; border-radius: 8px; font-size: 13px; background: #f1f3f4; color: #7f8c8d; cursor: default; }
+  .tab.active { background: #3498db; color: white; font-weight: 700; }
+  .tab.month { background: #edf2f7; }
+  .tab.month.active { background: #2c3e50; color: white; }
+
+  /* アラート */
+  .alert-box { border: 2px solid #f39c12; border-radius: 12px; overflow: hidden; max-width: 500px; margin: 16px auto; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .alert-header { background: #f39c12; color: white; padding: 12px 20px; font-weight: 700; font-size: 14px; }
+  .alert-body { padding: 20px; background: white; }
+  .alert-field { display: flex; align-items: center; gap: 12px; margin: 8px 0; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; }
+  .alert-field-label { font-size: 12px; color: #7f8c8d; min-width: 80px; }
+  .alert-field-value { font-weight: 700; }
+  .alert-select { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 4px 8px; font-size: 13px; }
+  .alert-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+  .alert-btn { padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: default; border: none; }
+  .alert-btn.primary { background: #3498db; color: white; }
+  .alert-btn.secondary { background: #f1f3f4; color: #7f8c8d; }
+
+  /* 設定画面 */
+  .settings-table { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .settings-table th { background: #2c3e50; color: white; font-size: 12px; }
+  .add-btn { display: inline-flex; align-items: center; gap: 4px; background: #eaf6ff; color: #3498db; border: 1px solid #3498db; border-radius: 6px; padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: default; margin-top: 8px; }
+  .del-btn { color: #e74c3c; font-size: 12px; cursor: default; }
+
+  .highlight-box { background: #eaf6ff; border-left: 4px solid #3498db; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .highlight-box.green { background: #f0fdf4; border-left-color: #27ae60; }
+  .highlight-box.orange { background: #fffbf0; border-left-color: #f39c12; }
+  .highlight-box.red { background: #fef2f2; border-left-color: #e74c3c; }
+
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge-auto { background: #d4edda; color: #155724; }
+  .badge-manual { background: #fff3cd; color: #856404; }
+
+  .footer { text-align: center; padding: 40px; color: #7f8c8d; font-size: 13px; }
+
+  @media (max-width: 768px) { .upload-grid { grid-template-columns: 1fr; } }
+  @media print { .nav { display: none; } }
 </style>
 </head>
 <body>
@@ -314,488 +127,365 @@
   <div class="subtitle">3つのCSVを入れると、各店舗のPL（損益計算書）が完成する。ダッシュボード = 会議資料。</div>
   <div class="meta">
     <span>作成日：2026年3月25日</span>
-    <span>案件：High Altitude Management株式会社</span>
-    <span>ステータス：設計中</span>
+    <span>High Altitude Management株式会社</span>
+    <span>設計中</span>
   </div>
 </div>
 
 <nav class="nav">
   <a href="#concept">コンセプト</a>
-  <a href="#system">システム構成</a>
   <a href="#input">データ取込</a>
-  <a href="#pl">PLダッシュボード</a>
+  <a href="#dashboard">PLダッシュボード</a>
+  <a href="#drill">従業員ドリルダウン</a>
+  <a href="#charts">グラフ・可視化</a>
   <a href="#alert">新入社員アラート</a>
   <a href="#expense">経費の自動分類</a>
-  <a href="#flow">処理の流れ</a>
+  <a href="#settings">設定画面</a>
   <a href="#operation">運用フロー</a>
 </nav>
 
-<div class="main">
+<div class="container">
 
   <!-- ===== 1: コンセプト ===== -->
   <div class="section" id="concept">
-    <div class="section-header bg-primary">
-      <div class="num">1</div>
-      コンセプト
+    <div class="section-title"><div class="section-num dark">1</div>コンセプト</div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;">
+      <div style="background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid #3498db;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;">💰</div>
+        <div style="font-size:14px;font-weight:700;margin-top:8px;">人件費CSV</div>
+        <div style="font-size:12px;color:#7f8c8d;">クラウド給与</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid #27ae60;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;">🧾</div>
+        <div style="font-size:14px;font-weight:700;margin-top:8px;">経費CSV</div>
+        <div style="font-size:12px;color:#7f8c8d;">PayPay銀行</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid #9b59b6;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;">📈</div>
+        <div style="font-size:14px;font-weight:700;margin-top:8px;">売上・会員CSV</div>
+        <div style="font-size:12px;color:#7f8c8d;">hacomono</div>
+      </div>
     </div>
-    <div class="section-body">
-      <p style="font-size:16px;font-weight:bold;margin-bottom:8px;">
-        3つの機能を分けない。1つのPLダッシュボードに統合する。
-      </p>
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">
-        データを入れるたびにPLが埋まっていき、全部揃うとそのまま会議資料になる。
-      </p>
+    <div style="text-align:center;font-size:28px;color:#bdc3c7;margin:8px 0;">▼ ▼ ▼</div>
+    <div style="background:#2c3e50;color:white;border-radius:16px;padding:28px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+      <div style="font-size:36px;">📊</div>
+      <div style="font-size:22px;font-weight:700;margin-top:8px;">PLダッシュボード</div>
+      <div style="font-size:14px;opacity:0.7;margin-top:4px;">各店舗 × 各月のPL + グラフ + 従業員詳細 = 会議資料そのもの</div>
+    </div>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
-        <div style="background:#eaf6ff;border-radius:10px;padding:20px;text-align:center;border:2px solid var(--accent);">
-          <div style="font-size:28px;margin-bottom:8px;">💰</div>
-          <div style="font-size:14px;font-weight:bold;">人件費CSV</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">クラウド給与</div>
-        </div>
-        <div style="background:#e6f4ea;border-radius:10px;padding:20px;text-align:center;border:2px solid var(--green);">
-          <div style="font-size:28px;margin-bottom:8px;">🧾</div>
-          <div style="font-size:14px;font-weight:bold;">経費CSV</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">PayPay銀行</div>
-        </div>
-        <div style="background:#f5eef8;border-radius:10px;padding:20px;text-align:center;border:2px solid var(--purple);">
-          <div style="font-size:28px;margin-bottom:8px;">📈</div>
-          <div style="font-size:14px;font-weight:bold;">売上・会員CSV</div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">hacomono</div>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-bottom:20px;">
-        <div style="font-size:28px;color:#bdc3c7;">▼ ▼ ▼</div>
-      </div>
-
-      <div style="background:var(--primary);color:white;border-radius:12px;padding:24px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">📊</div>
-        <div style="font-size:20px;font-weight:bold;">PLダッシュボード</div>
-        <div style="font-size:14px;opacity:0.7;margin-top:4px;">各店舗 × 各月のPL（損益計算書）が自動で完成 = 会議資料</div>
-      </div>
-
-      <div class="highlight-box green" style="margin-top:20px;">
-        <strong>別々の資料は作らない。</strong>1つのダッシュボードにすべてが集約。入れたデータの分だけPLが埋まり、全部入ると会議資料が完成。
-      </div>
+    <div class="highlight-box green" style="margin-top:20px;">
+      <strong>別々の資料は作らない。</strong>1つのダッシュボードにPL・グラフ・従業員詳細がすべて入っている。データを入れた分だけ埋まり、全部揃えば会議資料が完成。
     </div>
   </div>
 
-  <!-- ===== 2: システム構成 ===== -->
-  <div class="section" id="system">
-    <div class="section-header bg-blue">
-      <div class="num">2</div>
-      システム構成
+  <!-- ===== 2: データ取込 ===== -->
+  <div class="section" id="input">
+    <div class="section-title"><div class="section-num green">2</div>データ取込画面</div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="margin:0;">📤 データ取込</h3>
+        <div style="font-size:13px;color:#f39c12;font-weight:700;">2026年2月 — 人件費のみ取込済み</div>
+      </div>
+
+      <div class="upload-grid">
+        <div class="upload-box done">
+          <div class="icon">💰</div>
+          <div class="title">人件費</div>
+          <div class="desc">支給控除一覧表_202602.xlsx</div>
+          <div class="status done">✅ 74名 → 7店舗に振り分け済み</div>
+        </div>
+        <div class="upload-box">
+          <div class="icon">🧾</div>
+          <div class="title">経費</div>
+          <div class="desc">CSVをここにドロップ</div>
+          <div class="status pending">— 未取込</div>
+        </div>
+        <div class="upload-box">
+          <div class="icon">📈</div>
+          <div class="title">売上・会員</div>
+          <div class="desc">CSVをここにドロップ</div>
+          <div class="status pending">— 未取込</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <div style="display:inline-block;padding:12px 40px;background:#3498db;color:white;border-radius:8px;font-weight:700;font-size:15px;">▶ 取込実行</div>
+      </div>
     </div>
-    <div class="section-body">
-      <div style="display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:0;text-align:center;margin:20px 0;">
-        <div style="border:2px solid var(--accent);border-radius:12px;padding:20px;background:#f8faff;">
-          <div style="font-size:28px;">🖥️</div>
-          <div style="font-size:16px;font-weight:bold;margin:8px 0;">専用Webアプリ</div>
-          <div style="font-size:12px;color:var(--text-muted);text-align:left;padding:0 8px;">
-            <div style="margin:4px 0;">📤 CSV取込（3種類）</div>
-            <div style="margin:4px 0;">📊 PLダッシュボード表示</div>
-            <div style="margin:4px 0;">⚙️ 従業員・勘定科目管理</div>
-            <div style="margin:4px 0;">🔔 新入社員アラート</div>
+
+    <div class="highlight-box orange">
+      <strong>段階的に埋まる：</strong>人件費だけ入れればPLの人件費部分だけ表示。経費→経費部分追加。売上→完成。順番は自由。
+    </div>
+  </div>
+
+  <!-- ===== 3: PLダッシュボード ===== -->
+  <div class="section" id="dashboard">
+    <div class="section-title"><div class="section-num">3</div>PLダッシュボード（メイン画面）</div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <!-- タブ -->
+      <div style="padding:16px 24px;border-bottom:1px solid #eee;background:#fafbfc;">
+        <div style="margin-bottom:8px;">
+          <div class="tab-row" style="margin-bottom:8px;">
+            <div class="tab month">1月</div>
+            <div class="tab month active">2月</div>
+            <div class="tab month">3月</div>
           </div>
-        </div>
-        <div style="font-size:24px;color:#bdc3c7;">→</div>
-        <div style="border:2px solid var(--purple);border-radius:12px;padding:20px;background:#faf8ff;">
-          <div style="font-size:28px;">📧</div>
-          <div style="font-size:16px;font-weight:bold;margin:8px 0;">Gmail通知</div>
-          <div style="font-size:12px;color:var(--text-muted);">
-            「今月のPLが更新されました」<br>
-            ダッシュボードへのリンク付き
+          <div class="tab-row" style="margin-bottom:0;">
+            <div class="tab active">東日本橋</div>
+            <div class="tab">船橋</div>
+            <div class="tab">春日</div>
+            <div class="tab">巣鴨</div>
+            <div class="tab">祖師ヶ谷大蔵</div>
+            <div class="tab">下北沢</div>
+            <div class="tab">中目黒</div>
+            <div class="tab" style="border-left:2px solid #ddd;margin-left:8px;padding-left:20px;">全体</div>
           </div>
         </div>
       </div>
 
-      <div class="highlight-box">
-        <strong>スプレッドシートは挟まない。</strong>アプリのダッシュボード自体が最終成果物。各店長はリンクを開いて自分の店のPLを見るだけ。
-      </div>
+      <!-- KPI -->
+      <div style="padding:20px 24px;">
+        <div class="kpi-row">
+          <div class="kpi-card kpi-blue"><div class="kpi-label">売上合計</div><div class="kpi-value">¥2,850,000</div><div class="kpi-sub">前月比 +3.2%</div></div>
+          <div class="kpi-card kpi-red"><div class="kpi-label">人件費合計</div><div class="kpi-value">¥1,268,070</div><div class="kpi-sub">売上比 44.5%</div></div>
+          <div class="kpi-card kpi-orange"><div class="kpi-label">経費合計</div><div class="kpi-value">¥1,499,657</div><div class="kpi-sub">売上比 52.6%</div></div>
+          <div class="kpi-card kpi-green"><div class="kpi-label">営業利益</div><div class="kpi-value">¥82,273</div><div class="kpi-sub">利益率 2.9%</div></div>
+        </div>
 
-      <table class="styled-table">
-        <thead><tr><th>構成要素</th><th>技術</th><th>コスト</th></tr></thead>
+        <!-- PL -->
+        <h3 style="font-size:15px;margin-bottom:12px;">📋 東日本橋スタジオ — 2026年2月 PL</h3>
+        <table>
+          <thead>
+            <tr><th>項目</th><th class="num">金額</th><th class="num">売上比</th></tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="3">＜売上＞</td></tr>
+            <tr><td>月会費収入</td><td class="num">2,450,000</td><td class="num" style="color:#95a5a6;">86.0%</td></tr>
+            <tr><td>その他収入</td><td class="num">350,000</td><td class="num" style="color:#95a5a6;">12.3%</td></tr>
+            <tr><td>自販機手数料収入</td><td class="num">50,000</td><td class="num" style="color:#95a5a6;">1.8%</td></tr>
+            <tr class="subtotal"><td>売上合計</td><td class="num positive">2,850,000</td><td class="num">100%</td></tr>
+
+            <tr class="section-row"><td colspan="3">＜人件費＞ <span style="font-size:11px;color:#3498db;font-weight:normal;">▶ クリックで従業員別の詳細を展開</span></td></tr>
+            <tr><td class="drill-toggle">▶ 正社員給与</td><td class="num">544,865</td><td class="num" style="color:#95a5a6;">19.1%</td></tr>
+            <tr class="drill-detail"><td>藤井 柚希</td><td class="num">285,000</td><td class="num" style="color:#ccc;">160h</td></tr>
+            <tr class="drill-detail"><td>喜多 悠仁</td><td class="num">259,865</td><td class="num" style="color:#ccc;">152h</td></tr>
+            <tr><td class="drill-toggle">▶ 契約社員給与</td><td class="num">723,205</td><td class="num" style="color:#95a5a6;">25.4%</td></tr>
+            <tr class="drill-detail"><td>高橋 詩織</td><td class="num">166,075</td><td class="num" style="color:#ccc;">128h</td></tr>
+            <tr class="drill-detail"><td>山中 美奈子</td><td class="num">105,600</td><td class="num" style="color:#ccc;">88h</td></tr>
+            <tr class="drill-detail"><td style="color:#999;">...他8名</td><td class="num" style="color:#999;">451,530</td><td class="num" style="color:#ccc;">—</td></tr>
+            <tr><td>法定福利</td><td class="num">123,552</td><td class="num" style="color:#95a5a6;">4.3%</td></tr>
+            <tr><td>通勤手当</td><td class="num">108,035</td><td class="num" style="color:#95a5a6;">3.8%</td></tr>
+            <tr class="subtotal"><td>人件費合計</td><td class="num negative">1,499,657</td><td class="num">52.6%</td></tr>
+
+            <tr class="section-row"><td colspan="3">＜経費＞</td></tr>
+            <tr><td>賃借料</td><td class="num">142,440</td><td class="num" style="color:#95a5a6;">5.0%</td></tr>
+            <tr><td>消耗品費</td><td class="num">38,129</td><td class="num" style="color:#95a5a6;">1.3%</td></tr>
+            <tr><td>広告宣伝費</td><td class="num">3,060</td><td class="num" style="color:#95a5a6;">0.1%</td></tr>
+            <tr><td>通信費</td><td class="num">6,717</td><td class="num" style="color:#95a5a6;">0.2%</td></tr>
+            <tr><td>委託料</td><td class="num">11,484</td><td class="num" style="color:#95a5a6;">0.4%</td></tr>
+            <tr><td>支払手数料</td><td class="num">43,964</td><td class="num" style="color:#95a5a6;">1.5%</td></tr>
+            <tr class="subtotal"><td>経費合計</td><td class="num negative">1,499,657</td><td class="num">52.6%</td></tr>
+
+            <tr class="total"><td>営業利益</td><td class="num positive">82,273</td><td class="num">2.9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <strong>これが会議資料そのもの。</strong>プロジェクターに映すか印刷するだけ。店舗タブ×月タブで切り替え。人件費をクリックすると従業員別の金額・時間が展開される。
+    </div>
+  </div>
+
+  <!-- ===== 4: 従業員ドリルダウン ===== -->
+  <div class="section" id="drill">
+    <div class="section-title"><div class="section-num purple">4</div>従業員ドリルダウン</div>
+
+    <p style="font-size:14px;color:#7f8c8d;margin-bottom:16px;">PLの人件費行をクリックすると、その店舗の従業員ごとの金額・勤務時間が展開表示される。</p>
+
+    <div class="card">
+      <h3>💰 東日本橋 — 従業員別人件費（2026年2月）</h3>
+      <table>
+        <thead>
+          <tr><th>従業員</th><th>種別</th><th class="num">基本給</th><th class="num">残業手当</th><th class="num">支給合計</th><th class="num">勤務時間</th><th class="num">時間単価</th></tr>
+        </thead>
         <tbody>
-          <tr><td><strong>Webアプリ</strong></td><td>Streamlit（Python）</td><td>Streamlit Cloud無料 or VPS ¥1,000〜2,000/月</td></tr>
-          <tr><td><strong>データベース</strong></td><td>SQLite or PostgreSQL</td><td>無料（アプリ内蔵）</td></tr>
-          <tr><td><strong>メール送信</strong></td><td>Gmail API</td><td>無料</td></tr>
+          <tr><td><strong>藤井 柚希</strong></td><td>正社員</td><td class="num">250,000</td><td class="num">11,006</td><td class="num"><strong>285,000</strong></td><td class="num">160h</td><td class="num">¥1,781</td></tr>
+          <tr><td><strong>喜多 悠仁</strong></td><td>正社員</td><td class="num">250,000</td><td class="num">—</td><td class="num"><strong>259,865</strong></td><td class="num">152h</td><td class="num">¥1,710</td></tr>
+          <tr><td>高橋 詩織</td><td>アルバイト</td><td class="num">166,075</td><td class="num">—</td><td class="num">166,075</td><td class="num">128h</td><td class="num">¥1,297</td></tr>
+          <tr><td>山中 美奈子</td><td>アルバイト</td><td class="num">105,600</td><td class="num">—</td><td class="num">105,600</td><td class="num">88h</td><td class="num">¥1,200</td></tr>
+          <tr><td>梅田 信之輔</td><td>アルバイト</td><td class="num">80,400</td><td class="num">—</td><td class="num">80,400</td><td class="num">67h</td><td class="num">¥1,200</td></tr>
+          <tr><td colspan="4" style="color:#999;">...他7名</td><td class="num" style="color:#999;">370,330</td><td class="num" style="color:#999;">—</td><td></td></tr>
+          <tr class="subtotal">
+            <td colspan="4"><strong>東日本橋 合計（12名）</strong></td>
+            <td class="num"><strong>1,268,070</strong></td>
+            <td class="num"><strong>764h</strong></td>
+            <td class="num"><strong>¥1,660</strong></td>
+          </tr>
         </tbody>
       </table>
     </div>
+
+    <div class="highlight-box">
+      <strong>「この人にいくら使っているか」が一目でわかる。</strong>従業員ごとの支給合計・勤務時間・時間単価を表示。正社員/アルバイトの内訳も明確。
+    </div>
   </div>
 
-  <!-- ===== 3: データ取込 ===== -->
-  <div class="section" id="input">
-    <div class="section-header bg-green">
-      <div class="num">3</div>
-      データ取込画面
-    </div>
-    <div class="section-body">
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
-        3種類のCSVを1つの画面から取り込む。入れたデータの分だけPLが埋まる。
-      </p>
+  <!-- ===== 5: グラフ・可視化 ===== -->
+  <div class="section" id="charts">
+    <div class="section-title"><div class="section-num orange">5</div>グラフ・可視化</div>
 
-      <div class="app-mock" style="margin-bottom:20px;">
-        <div class="app-topbar">📊 ハイアルチ 業務自動化</div>
-        <div class="app-body">
+    <p style="font-size:14px;color:#7f8c8d;margin-bottom:20px;">売上・会員数・経費の推移をグラフで可視化。月次データが蓄積されるほど充実していく。</p>
 
-          <div class="app-input-row">
-            <div class="app-input">
-              <div class="app-input-label">対象月</div>
-              <div class="app-input-value">2026年2月</div>
-            </div>
-            <div class="app-input">
-              <div class="app-input-label">対象店舗</div>
-              <div class="app-input-value">全店舗（自動振り分け）</div>
-            </div>
-            <div class="app-input">
-              <div class="app-input-label">ステータス</div>
-              <div class="app-input-value" style="color:var(--orange);">人件費のみ取込済み</div>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
-            <!-- 人件費 -->
-            <div style="border:2px solid var(--green);border-radius:10px;overflow:hidden;">
-              <div style="background:var(--green);color:white;padding:10px 14px;font-size:13px;font-weight:bold;text-align:center;">
-                💰 人件費 <span style="opacity:0.7;font-weight:normal;">— 取込済み ✅</span>
-              </div>
-              <div style="padding:14px;text-align:center;background:#e6f4ea;font-size:12px;color:var(--text-muted);">
-                支給控除一覧表_202602.xlsx<br>
-                <span style="color:var(--green);font-weight:bold;">74名分を7店舗に振り分け済み</span>
-              </div>
-            </div>
-            <!-- 経費 -->
-            <div style="border:2px dashed #bdc3c7;border-radius:10px;overflow:hidden;">
-              <div style="background:#f8f9fa;color:var(--text-muted);padding:10px 14px;font-size:13px;font-weight:bold;text-align:center;">
-                🧾 経費 <span style="font-weight:normal;">— 未取込</span>
-              </div>
-              <div class="app-upload" style="margin:0;border:none;border-radius:0;padding:14px;">
-                <div style="font-size:24px;color:#bdc3c7;">📁</div>
-                <div style="font-size:12px;color:var(--text-muted);">CSVをドロップ</div>
-              </div>
-            </div>
-            <!-- 売上 -->
-            <div style="border:2px dashed #bdc3c7;border-radius:10px;overflow:hidden;">
-              <div style="background:#f8f9fa;color:var(--text-muted);padding:10px 14px;font-size:13px;font-weight:bold;text-align:center;">
-                📈 売上・会員 <span style="font-weight:normal;">— 未取込</span>
-              </div>
-              <div class="app-upload" style="margin:0;border:none;border-radius:0;padding:14px;">
-                <div style="font-size:24px;color:#bdc3c7;">📁</div>
-                <div style="font-size:12px;color:var(--text-muted);">CSVをドロップ</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="app-btn">▶ 取込実行 → PLダッシュボードに反映</div>
-        </div>
+    <div class="grid-2">
+      <div class="chart-card">
+        <h3>📈 売上推移（東日本橋）</h3>
+        <div class="chart-wrap"><canvas id="chart-revenue"></canvas></div>
       </div>
-
-      <div class="highlight-box orange">
-        <strong>段階的に埋まる：</strong>人件費だけ入れたらPLの人件費部分だけ表示。経費を入れたら経費部分も追加。全部入ると完全なPL = 会議資料。
+      <div class="chart-card">
+        <h3>👥 会員数推移（東日本橋）</h3>
+        <div class="chart-wrap"><canvas id="chart-members"></canvas></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="chart-card">
+        <h3>💰 人件費 vs 売上 推移</h3>
+        <div class="chart-wrap"><canvas id="chart-labor"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>🏪 店舗別 営業利益（2月）</h3>
+        <div class="chart-wrap"><canvas id="chart-stores"></canvas></div>
       </div>
     </div>
   </div>
 
-  <!-- ===== 4: PLダッシュボード ===== -->
-  <div class="section" id="pl">
-    <div class="section-header bg-primary">
-      <div class="num">4</div>
-      PLダッシュボード（メイン画面）
-    </div>
-    <div class="section-body">
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
-        これが最終成果物であり、会議資料そのもの。店舗タブ × 月タブで切り替え。
-      </p>
-
-      <div class="dash">
-        <div class="dash-topbar">
-          <div class="dash-topbar-left">
-            <div style="font-size:20px;">📊</div>
-            <div class="dash-topbar-title">PLダッシュボード</div>
-          </div>
-          <div class="dash-topbar-right">
-            <div class="dash-tab">1月</div>
-            <div class="dash-tab active">2月</div>
-            <div class="dash-tab">3月</div>
-          </div>
-        </div>
-        <div class="dash-store-tabs">
-          <div class="dash-store-tab active">東日本橋</div>
-          <div class="dash-store-tab">船橋</div>
-          <div class="dash-store-tab">春日</div>
-          <div class="dash-store-tab">巣鴨</div>
-          <div class="dash-store-tab">祖師ヶ谷大蔵</div>
-          <div class="dash-store-tab">下北沢</div>
-          <div class="dash-store-tab">中目黒</div>
-          <div class="dash-store-tab" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:20px;">全体</div>
-        </div>
-        <div class="dash-body">
-
-          <!-- KPI -->
-          <div class="dash-kpi-row">
-            <div class="dash-kpi">
-              <div class="label">売上合計</div>
-              <div class="value blue">¥2,850,000</div>
-            </div>
-            <div class="dash-kpi">
-              <div class="label">経費合計</div>
-              <div class="value orange">¥1,499,657</div>
-            </div>
-            <div class="dash-kpi">
-              <div class="label">人件費合計</div>
-              <div class="value red">¥1,268,070</div>
-            </div>
-            <div class="dash-kpi">
-              <div class="label">営業利益</div>
-              <div class="value green">¥82,273</div>
-            </div>
-          </div>
-
-          <!-- PL -->
-          <div class="dash-pl">
-            <div class="dash-pl-header">📋 東日本橋スタジオ — 2026年2月 PL</div>
-            <table>
-              <thead>
-                <tr><th>項目</th><th class="num">金額</th><th class="num">構成比</th></tr>
-              </thead>
-              <tbody>
-                <tr class="section-row"><td colspan="3">＜売上＞</td></tr>
-                <tr><td class="label filled">月会費収入</td><td class="num filled">2,450,000</td><td class="num" style="color:rgba(255,255,255,0.3);">86.0%</td></tr>
-                <tr><td class="label filled">その他収入</td><td class="num filled">350,000</td><td class="num" style="color:rgba(255,255,255,0.3);">12.3%</td></tr>
-                <tr><td class="label filled">自販機手数料収入</td><td class="num filled">50,000</td><td class="num" style="color:rgba(255,255,255,0.3);">1.8%</td></tr>
-                <tr class="subtotal"><td>売上合計</td><td class="num positive">2,850,000</td><td class="num">100%</td></tr>
-
-                <tr class="section-row"><td colspan="3">＜人件費＞</td></tr>
-                <tr><td class="label filled">正社員給与</td><td class="num filled">544,865</td><td class="num" style="color:rgba(255,255,255,0.3);">19.1%</td></tr>
-                <tr><td class="label filled">契約社員給与</td><td class="num filled">723,205</td><td class="num" style="color:rgba(255,255,255,0.3);">25.4%</td></tr>
-                <tr class="subtotal"><td>人件費合計</td><td class="num negative">1,268,070</td><td class="num">44.5%</td></tr>
-
-                <tr class="section-row"><td colspan="3">＜経費＞</td></tr>
-                <tr><td class="label filled">賃借料</td><td class="num filled">142,440</td><td class="num" style="color:rgba(255,255,255,0.3);">5.0%</td></tr>
-                <tr><td class="label filled">消耗品費</td><td class="num filled">38,129</td><td class="num" style="color:rgba(255,255,255,0.3);">1.3%</td></tr>
-                <tr><td class="label filled">広告宣伝費</td><td class="num filled">3,060</td><td class="num" style="color:rgba(255,255,255,0.3);">0.1%</td></tr>
-                <tr><td class="label filled">通信費</td><td class="num filled">6,717</td><td class="num" style="color:rgba(255,255,255,0.3);">0.2%</td></tr>
-                <tr><td class="label filled">委託料</td><td class="num filled">11,484</td><td class="num" style="color:rgba(255,255,255,0.3);">0.4%</td></tr>
-                <tr><td class="label filled">支払手数料</td><td class="num filled">43,964</td><td class="num" style="color:rgba(255,255,255,0.3);">1.5%</td></tr>
-                <tr><td class="label" style="color:rgba(255,255,255,0.3);">法定福利</td><td class="num filled">123,552</td><td class="num" style="color:rgba(255,255,255,0.3);">4.3%</td></tr>
-                <tr><td class="label" style="color:rgba(255,255,255,0.3);">通勤手当</td><td class="num filled">108,035</td><td class="num" style="color:rgba(255,255,255,0.3);">3.8%</td></tr>
-                <tr class="subtotal"><td>経費合計</td><td class="num negative">1,499,657</td><td class="num">52.6%</td></tr>
-
-                <tr class="total"><td>営業利益</td><td class="num positive">82,273</td><td class="num">2.9%</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- ステータス -->
-          <div class="dash-status-row">
-            <div class="dash-status-chip done">✅ 人件費 取込済み</div>
-            <div class="dash-status-chip done">✅ 経費 取込済み</div>
-            <div class="dash-status-chip done">✅ 売上 取込済み</div>
-            <div style="margin-left:auto;font-size:12px;color:rgba(255,255,255,0.4);">PL完成 — このまま会議資料として使用可能</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="highlight-box" style="margin-top:16px;">
-        <strong>これが会議資料そのもの。</strong>会議ではこの画面をプロジェクターに映すだけ。店舗タブを切り替えながら各店舗の数字を確認。印刷（PDF）も可能。
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== 5: 新入社員アラート ===== -->
+  <!-- ===== 6: 新入社員アラート ===== -->
   <div class="section" id="alert">
-    <div class="section-header bg-orange">
-      <div class="num">5</div>
-      新入社員アラート
-    </div>
-    <div class="section-body">
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
-        人件費CSVに未登録の従業員番号があった場合、自動でアラートを表示。千の位から所属店舗を提案し、違えばその場で変更可能。
-      </p>
+    <div class="section-title"><div class="section-num orange">6</div>新入社員アラート</div>
 
-      <div class="alert-mock">
-        <div class="alert-header">⚠️ 未登録の従業員が見つかりました</div>
-        <div class="alert-body">
-          <p style="margin-bottom:12px;">以下の従業員がマッピングテーブルに登録されていません。所属店舗を確認してください。</p>
+    <p style="font-size:14px;color:#7f8c8d;margin-bottom:16px;">CSVに未登録の従業員番号があった場合、所属店舗を自動提案。合っていればそのまま登録、違えばプルダウンで変更。</p>
 
-          <div class="alert-field">
-            <div class="alert-field-label">従業員番号</div>
-            <div class="alert-field-value">1039</div>
-          </div>
-          <div class="alert-field">
-            <div class="alert-field-label">氏名</div>
-            <div class="alert-field-value">田中 美咲</div>
-          </div>
-          <div class="alert-field">
-            <div class="alert-field-label">契約種別</div>
-            <div class="alert-field-value">アルバイト</div>
-          </div>
-          <div class="alert-field">
-            <div class="alert-field-label">所属店舗</div>
-            <div>
-              <select class="alert-field-select">
-                <option selected>東日本橋（1xxx → 自動判定）</option>
-                <option>船橋</option>
-                <option>春日</option>
-                <option>巣鴨</option>
-                <option>祖師ヶ谷大蔵</option>
-                <option>下北沢</option>
-                <option>中目黒</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="alert-actions">
-            <div class="alert-btn secondary">スキップ</div>
-            <div class="alert-btn primary">この内容で登録</div>
-          </div>
+    <div class="alert-box">
+      <div class="alert-header">⚠️ 未登録の従業員が見つかりました</div>
+      <div class="alert-body">
+        <p style="margin-bottom:12px;font-size:13px;color:#555;">以下の従業員が登録されていません。所属店舗を確認してください。</p>
+        <div class="alert-field"><div class="alert-field-label">従業員番号</div><div class="alert-field-value">1039</div></div>
+        <div class="alert-field"><div class="alert-field-label">氏名</div><div class="alert-field-value">田中 美咲</div></div>
+        <div class="alert-field"><div class="alert-field-label">契約種別</div><div class="alert-field-value">アルバイト</div></div>
+        <div class="alert-field">
+          <div class="alert-field-label">所属店舗</div>
+          <select class="alert-select">
+            <option selected>東日本橋（1xxx → 自動判定）</option>
+            <option>船橋</option><option>春日</option><option>巣鴨</option>
+            <option>祖師ヶ谷大蔵</option><option>下北沢</option><option>中目黒</option>
+          </select>
         </div>
-      </div>
-
-      <div class="highlight-box orange">
-        <strong>千の位で自動提案 → 合っていればそのまま登録。</strong>違えばプルダウンで変更。社員の場合（2桁番号等）は店舗が空欄で表示されるので選択必須。
+        <div class="alert-actions">
+          <div class="alert-btn secondary">スキップ</div>
+          <div class="alert-btn primary">この内容で登録</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== 6: 経費の自動分類 ===== -->
+  <!-- ===== 7: 経費の自動分類 ===== -->
   <div class="section" id="expense">
-    <div class="section-header bg-green">
-      <div class="num">6</div>
-      経費の自動分類（勘定科目＋内訳）
-    </div>
-    <div class="section-body">
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:16px;">
-        PayPay銀行CSVの「摘要」テキストから勘定科目を自動判定。内訳（品名）は摘要をそのまま使用。
-      </p>
+    <div class="section-title"><div class="section-num green">7</div>経費の自動分類</div>
 
-      <h4 style="font-size:15px;margin-bottom:12px;">自動分類ルール（実データより）</h4>
-      <table class="styled-table">
-        <thead><tr><th>摘要に含まれるキーワード</th><th>勘定科目</th><th>内訳（例）</th></tr></thead>
+    <div class="card">
+      <h3>🧾 摘要テキスト → 勘定科目の自動判定ルール</h3>
+      <table>
+        <thead><tr><th>摘要キーワード</th><th>勘定科目</th><th>内訳（品名）</th></tr></thead>
         <tbody>
           <tr><td><code>AMAZON</code></td><td>消耗品費</td><td>Amazon注文品</td></tr>
           <tr><td><code>プリントパック</code> / <code>ラクスル</code></td><td>広告宣伝費</td><td>印刷物</td></tr>
-          <tr><td><code>ダスキン</code></td><td>委託料</td><td>定期清掃サービス</td></tr>
-          <tr><td><code>セコム</code> / <code>SMBC</code></td><td>委託料</td><td>警備サービス</td></tr>
-          <tr><td><code>テレポ</code></td><td>通信費</td><td>電話料</td></tr>
-          <tr><td><code>BIZIMO</code></td><td>通信費</td><td>Wi-Fi</td></tr>
+          <tr><td><code>ダスキン</code></td><td>委託料</td><td>定期清掃</td></tr>
+          <tr><td><code>セコム</code></td><td>委託料</td><td>警備</td></tr>
+          <tr><td><code>テレポ</code> / <code>BIZIMO</code></td><td>通信費</td><td>電話・Wi-Fi</td></tr>
           <tr><td><code>ダイワショウケンオフィス</code></td><td>賃借料</td><td>家賃</td></tr>
-          <tr><td><code>ネットプロテクションズ</code></td><td>支払手数料</td><td>決済手数料</td></tr>
           <tr><td><code>振込手数料</code></td><td>支払手数料</td><td>振込手数料</td></tr>
-          <tr><td><code>決算お利息</code></td><td>—（売上側）</td><td>受取利息</td></tr>
-          <tr><td>上記に該当しない</td><td><span class="badge badge-manual">手動選択</span></td><td>画面上で科目を選ぶ</td></tr>
+          <tr><td>該当なし</td><td><span class="badge badge-manual">手動選択</span></td><td>画面上で科目を選ぶ → 次回から自動</td></tr>
         </tbody>
       </table>
+    </div>
 
-      <div class="highlight-box green">
-        <strong>一度手動で分類した取引先は学習される。</strong>「カ）セイワビジネス → 委託料」と1回設定すれば、次回以降は自動で委託料に分類。ルール辞書が育っていく。
-      </div>
+    <div class="highlight-box green">
+      <strong>学習するルール辞書：</strong>一度手動で分類した取引先は記憶される。使うほどルールが育ち、手動選択が減っていく。
+    </div>
 
-      <h4 style="font-size:15px;margin:24px 0 12px;">先方に確認が必要</h4>
-      <div class="highlight-box red">
-        <strong>経費CSVの店舗振り分け方法：</strong>現在のPayPay銀行CSVは全社一本の口座。各店舗の経費をどう区別しているか（店舗ごとに口座がある？店長が別途データを送っている？）を確認中。
-      </div>
+    <div class="highlight-box red">
+      <strong>先方に確認中：</strong>経費CSVの店舗振り分け方法。各店舗ごとにCSVが来るのか、全社一本の口座か。
     </div>
   </div>
 
-  <!-- ===== 7: 処理の流れ ===== -->
-  <div class="section" id="flow">
-    <div class="section-header bg-purple">
-      <div class="num">7</div>
-      処理の流れ（全体）
-    </div>
-    <div class="section-body">
-      <div class="flow-vertical">
-        <div class="flow-step blue">
-          <div class="flow-step-icon">📤</div>
-          <div class="flow-step-title">CSVをアプリにドロップ</div>
-          <div class="flow-step-desc">人件費 / 経費 / 売上・会員 — どれからでもOK</div>
-        </div>
-        <div class="flow-arrow">▼</div>
-        <div class="flow-step orange">
-          <div class="flow-step-icon">🔔</div>
-          <div class="flow-step-title">未登録の従業員・取引先があればアラート</div>
-          <div class="flow-step-desc">新入社員 → 店舗を自動提案＋確認。未知の経費 → 勘定科目を手動選択</div>
-        </div>
-        <div class="flow-arrow">▼</div>
-        <div class="flow-step">
-          <div class="flow-step-icon">🏷️</div>
-          <div class="flow-step-title">自動振り分け＋自動分類</div>
-          <div class="flow-step-desc">人件費 → 従業員番号で店舗別。経費 → ルール辞書で勘定科目。売上 → hacomonoデータを集計</div>
-        </div>
-        <div class="flow-arrow">▼</div>
-        <div class="flow-step green">
-          <div class="flow-step-icon">📊</div>
-          <div class="flow-step-title">PLダッシュボードに反映</div>
-          <div class="flow-step-desc">入れたデータの分だけPLが埋まる。全部入ると完成 = 会議資料</div>
-        </div>
-        <div class="flow-arrow">▼</div>
-        <div class="flow-step purple">
-          <div class="flow-step-icon">📧</div>
-          <div class="flow-step-title">Gmail通知</div>
-          <div class="flow-step-desc">「今月のPLが更新されました」＋ ダッシュボードへのリンク</div>
-        </div>
+  <!-- ===== 8: 設定画面 ===== -->
+  <div class="section" id="settings">
+    <div class="section-title"><div class="section-num dark">8</div>設定画面 — 従業員登録・勘定科目管理</div>
+
+    <p style="font-size:14px;color:#7f8c8d;margin-bottom:16px;">ダッシュボード内の「設定」タブで従業員マッピングと勘定科目ルールを管理。</p>
+
+    <div class="card">
+      <h3>🏷️ 従業員 → 店舗マッピング</h3>
+      <p style="font-size:13px;color:#7f8c8d;margin-bottom:12px;">千の位ルールで自動判定できない従業員のみ登録。アルバイトは登録不要。</p>
+      <div class="settings-table">
+        <table>
+          <thead><tr><th>従業員番号</th><th>氏名</th><th>所属店舗</th><th>備考</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>24</td><td>山﨑 善揮</td><td>船橋</td><td>店長</td><td class="del-btn">削除</td></tr>
+            <tr><td>26</td><td>森田 真央</td><td>中目黒</td><td>店長</td><td class="del-btn">削除</td></tr>
+            <tr><td>4005</td><td>渡邉 哲史</td><td>春日:60 / 巣鴨:40</td><td>兼務</td><td class="del-btn">削除</td></tr>
+            <tr><td>4013</td><td>藤井 柚希</td><td>東日本橋</td><td>番号例外</td><td class="del-btn">削除</td></tr>
+            <tr><td colspan="4" style="color:#999;">...（合計13名）</td><td></td></tr>
+          </tbody>
+        </table>
       </div>
+      <span class="add-btn">＋ 従業員を追加</span>
+    </div>
+
+    <div class="card">
+      <h3>🧾 経費分類ルール辞書</h3>
+      <p style="font-size:13px;color:#7f8c8d;margin-bottom:12px;">摘要キーワード → 勘定科目の対応ルール。手動分類した結果が自動追加される。</p>
+      <div class="settings-table">
+        <table>
+          <thead><tr><th>キーワード</th><th>勘定科目</th><th>登録方法</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>AMAZON</td><td>消耗品費</td><td><span class="badge badge-auto">初期登録</span></td><td class="del-btn">削除</td></tr>
+            <tr><td>ダスキン</td><td>委託料</td><td><span class="badge badge-auto">初期登録</span></td><td class="del-btn">削除</td></tr>
+            <tr><td>カ）セイワビジネス</td><td>委託料</td><td><span class="badge badge-manual">手動分類から学習</span></td><td class="del-btn">削除</td></tr>
+            <tr><td colspan="3" style="color:#999;">...ルールは使うほど増えていく</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="add-btn">＋ ルールを追加</span>
     </div>
   </div>
 
-  <!-- ===== 8: 運用フロー ===== -->
+  <!-- ===== 9: 運用フロー ===== -->
   <div class="section" id="operation">
-    <div class="section-header bg-teal">
-      <div class="num">8</div>
-      運用フロー
-    </div>
-    <div class="section-body">
-      <h4 style="font-size:15px;margin-bottom:12px;">初回セットアップ（1回だけ）</h4>
-      <ul class="icon-list">
-        <li>
-          <div class="icon-dot" style="background:var(--orange);"></div>
-          <div>従業員の個別登録（例外13名＋兼務者の按分比率） <span class="badge badge-manual">手動</span></div>
-        </li>
-        <li>
-          <div class="icon-dot" style="background:var(--orange);"></div>
-          <div>経費の分類ルール辞書の初期登録（主要取引先の勘定科目） <span class="badge badge-manual">手動</span></div>
-        </li>
-        <li>
-          <div class="icon-dot" style="background:var(--orange);"></div>
-          <div>各店舗の通知先メールアドレス登録 <span class="badge badge-manual">手動</span></div>
-        </li>
-      </ul>
+    <div class="section-title"><div class="section-num dark">9</div>運用フロー</div>
 
-      <h4 style="font-size:15px;margin:24px 0 12px;">毎月の運用</h4>
-      <table class="styled-table">
+    <div class="card">
+      <h3>📅 毎月の運用</h3>
+      <table>
         <thead><tr><th>順番</th><th>作業</th><th>PLの変化</th></tr></thead>
         <tbody>
-          <tr>
-            <td>①</td>
-            <td>クラウド給与から人件費CSVを取込</td>
-            <td>PLの<strong>人件費</strong>部分が埋まる</td>
-          </tr>
-          <tr>
-            <td>②</td>
-            <td>PayPay銀行から経費CSVを取込</td>
-            <td>PLの<strong>経費</strong>部分が埋まる</td>
-          </tr>
-          <tr>
-            <td>③</td>
-            <td>hacomonoから売上・会員CSVを取込</td>
-            <td>PLの<strong>売上</strong>部分が埋まる → <strong>PL完成 = 会議資料</strong></td>
-          </tr>
-          <tr>
-            <td>④</td>
-            <td>Gmail通知が自動送信される</td>
-            <td>各店長がリンクから自分の店のPLを確認</td>
-          </tr>
+          <tr><td>①</td><td>クラウド給与から人件費CSVを取込</td><td>PLの<strong>人件費</strong>部分＋従業員詳細が埋まる</td></tr>
+          <tr><td>②</td><td>PayPay銀行から経費CSVを取込</td><td>PLの<strong>経費</strong>部分が埋まる</td></tr>
+          <tr><td>③</td><td>hacomonoから売上・会員CSVを取込</td><td>PLの<strong>売上</strong>部分＋グラフが埋まる → <strong>PL完成 = 会議資料</strong></td></tr>
         </tbody>
       </table>
-      <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">※ ①②③の順番は問わない。どれからでもOK。</p>
+      <p style="font-size:12px;color:#7f8c8d;margin-top:8px;">※ ①②③の順番は自由。入れた分だけPLが埋まる。</p>
+    </div>
 
-      <h4 style="font-size:15px;margin:24px 0 12px;">人の増減・新しい取引先</h4>
-      <table class="styled-table">
+    <div class="card">
+      <h3>🔔 イベント発生時</h3>
+      <table>
         <thead><tr><th>イベント</th><th>対応</th></tr></thead>
         <tbody>
-          <tr><td>アルバイト入社</td><td><span class="badge badge-auto">自動</span> 千の位で店舗提案 → アラートで確認するだけ</td></tr>
+          <tr><td>アルバイト入社</td><td><span class="badge badge-auto">自動</span> 千の位で店舗提案 → アラートで確認</td></tr>
           <tr><td>社員入社</td><td><span class="badge badge-manual">アラート</span> 店舗をプルダウンで選択して登録</td></tr>
           <tr><td>未知の経費取引先</td><td><span class="badge badge-manual">アラート</span> 勘定科目を選択 → 次回から自動</td></tr>
           <tr><td>退職</td><td><span class="badge badge-auto">自動</span> CSVに載らなくなるので自動で外れる</td></tr>
@@ -811,6 +501,82 @@
   <p style="margin-top:4px;">High Altitude Management株式会社 × 株式会社斗</p>
   <p style="margin-top:4px;">2026年3月25日作成</p>
 </div>
+
+<script>
+// 売上推移
+new Chart(document.getElementById('chart-revenue'), {
+  type: 'bar',
+  data: {
+    labels: ['9月','10月','11月','12月','1月','2月'],
+    datasets: [
+      { label: '月会費', data: [2200000,2300000,2350000,2400000,2380000,2450000], backgroundColor: '#3498db' },
+      { label: 'その他', data: [280000,310000,290000,320000,340000,350000], backgroundColor: '#85c1e9' },
+      { label: '自販機', data: [45000,48000,42000,50000,47000,50000], backgroundColor: '#d4e6f1' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true, ticks: { callback: v => '¥' + (v/10000).toFixed(0) + '万' } }
+    }
+  }
+});
+
+// 会員数推移
+new Chart(document.getElementById('chart-members'), {
+  type: 'line',
+  data: {
+    labels: ['9月','10月','11月','12月','1月','2月'],
+    datasets: [
+      { label: '在籍会員数', data: [320,335,342,348,345,352], borderColor: '#9b59b6', backgroundColor: 'rgba(155,89,182,0.1)', fill: true, tension: 0.3 },
+      { label: '新規入会', data: [28,22,18,15,12,20], borderColor: '#27ae60', borderDash: [5,5], tension: 0.3 },
+      { label: '退会', data: [15,12,11,9,15,13], borderColor: '#e74c3c', borderDash: [5,5], tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+    scales: { y: { beginAtZero: false } }
+  }
+});
+
+// 人件費 vs 売上
+new Chart(document.getElementById('chart-labor'), {
+  type: 'line',
+  data: {
+    labels: ['9月','10月','11月','12月','1月','2月'],
+    datasets: [
+      { label: '売上', data: [2525000,2658000,2682000,2770000,2767000,2850000], borderColor: '#3498db', backgroundColor: 'rgba(52,152,219,0.1)', fill: true, tension: 0.3 },
+      { label: '人件費', data: [1180000,1210000,1230000,1250000,1255000,1268070], borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,0.1)', fill: true, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+    scales: { y: { ticks: { callback: v => '¥' + (v/10000).toFixed(0) + '万' } } }
+  }
+});
+
+// 店舗別営業利益
+new Chart(document.getElementById('chart-stores'), {
+  type: 'bar',
+  data: {
+    labels: ['東日本橋','船橋','春日','巣鴨','祖師ヶ谷','下北沢','中目黒'],
+    datasets: [{
+      label: '営業利益',
+      data: [82273, 120000, 95000, 68000, 45000, 110000, 78000],
+      backgroundColor: v => v.raw >= 0 ? '#27ae60' : '#e74c3c'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { ticks: { callback: v => '¥' + (v/10000).toFixed(0) + '万' } } }
+  }
+});
+</script>
 
 </body>
 </html>
