@@ -255,6 +255,28 @@
           <div class="kpi-card kpi-green"><div class="kpi-label">営業利益</div><div class="kpi-value">¥82,273</div><div class="kpi-sub">利益率 2.9%</div></div>
         </div>
 
+        <!-- グラフ埋め込み -->
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">📈 売上推移</h4>
+            <div style="height:200px;"><canvas id="chart-revenue-dash"></canvas></div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">👥 会員数推移</h4>
+            <div style="height:200px;"><canvas id="chart-members-dash"></canvas></div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-bottom:24px;">
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">💰 人件費率推移</h4>
+            <div style="height:200px;"><canvas id="chart-labor-dash"></canvas></div>
+          </div>
+          <div style="background:#f8fafc;border-radius:10px;padding:16px;">
+            <h4 style="font-size:13px;color:#7f8c8d;margin-bottom:8px;">🏪 店舗別 営業利益</h4>
+            <div style="height:200px;"><canvas id="chart-stores-dash"></canvas></div>
+          </div>
+        </div>
+
         <!-- PL -->
         <h3 style="font-size:15px;margin-bottom:12px;">📋 東日本橋スタジオ — 2026年2月 PL</h3>
         <table>
@@ -334,31 +356,27 @@
     </div>
   </div>
 
-  <!-- ===== 5: グラフ・可視化 ===== -->
+  <!-- ===== 5: グラフについて ===== -->
   <div class="section" id="charts">
     <div class="section-title"><div class="section-num orange">5</div>グラフ・可視化</div>
 
-    <p style="font-size:14px;color:#7f8c8d;margin-bottom:20px;">売上・会員数・経費の推移をグラフで可視化。月次データが蓄積されるほど充実していく。</p>
+    <p style="font-size:14px;color:#7f8c8d;margin-bottom:16px;">グラフはPLダッシュボードの中に埋め込み済み（上のセクション3を参照）。KPIカードの直下に4つのグラフが並び、その下にPL明細が続く構成。</p>
 
-    <div class="grid-2">
-      <div class="chart-card">
-        <h3>📈 売上推移（東日本橋）</h3>
-        <div class="chart-wrap"><canvas id="chart-revenue"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>👥 会員数推移（東日本橋）</h3>
-        <div class="chart-wrap"><canvas id="chart-members"></canvas></div>
-      </div>
+    <div class="card">
+      <h3>ダッシュボード1画面の構成（上から順に）</h3>
+      <table>
+        <thead><tr><th>エリア</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><strong>① タブ</strong></td><td>月切り替え（1月/2月/3月...） × 店舗切り替え（東日本橋/船橋.../全体）</td></tr>
+          <tr><td><strong>② KPIカード</strong></td><td>売上合計・人件費合計・経費合計・営業利益の4つ</td></tr>
+          <tr><td><strong>③ グラフ4つ</strong></td><td>売上推移（積み上げ棒）/ 会員数推移（折れ線）/ 人件費率推移 / 店舗別営業利益</td></tr>
+          <tr><td><strong>④ PL明細</strong></td><td>売上→人件費→経費→営業利益。人件費をクリックで従業員ドリルダウン</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="grid-2">
-      <div class="chart-card">
-        <h3>💰 人件費 vs 売上 推移</h3>
-        <div class="chart-wrap"><canvas id="chart-labor"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>🏪 店舗別 営業利益（2月）</h3>
-        <div class="chart-wrap"><canvas id="chart-stores"></canvas></div>
-      </div>
+
+    <div class="highlight-box green">
+      <strong>1画面で全部見える。</strong>スクロールするだけでKPI→グラフ→PL詳細→従業員別まで、会議で必要な情報がすべて揃う。
     </div>
   </div>
 
@@ -503,8 +521,8 @@
 </div>
 
 <script>
-// 売上推移
-new Chart(document.getElementById('chart-revenue'), {
+// 売上推移（ダッシュボード埋め込み）
+new Chart(document.getElementById('chart-revenue-dash'), {
   type: 'bar',
   data: {
     labels: ['9月','10月','11月','12月','1月','2月'],
@@ -524,8 +542,8 @@ new Chart(document.getElementById('chart-revenue'), {
   }
 });
 
-// 会員数推移
-new Chart(document.getElementById('chart-members'), {
+// 会員数推移（ダッシュボード埋め込み）
+new Chart(document.getElementById('chart-members-dash'), {
   type: 'line',
   data: {
     labels: ['9月','10月','11月','12月','1月','2月'],
@@ -542,8 +560,8 @@ new Chart(document.getElementById('chart-members'), {
   }
 });
 
-// 人件費 vs 売上
-new Chart(document.getElementById('chart-labor'), {
+// 人件費率推移（ダッシュボード埋め込み）
+new Chart(document.getElementById('chart-labor-dash'), {
   type: 'line',
   data: {
     labels: ['9月','10月','11月','12月','1月','2月'],
@@ -559,8 +577,8 @@ new Chart(document.getElementById('chart-labor'), {
   }
 });
 
-// 店舗別営業利益
-new Chart(document.getElementById('chart-stores'), {
+// 店舗別営業利益（ダッシュボード埋め込み）
+new Chart(document.getElementById('chart-stores-dash'), {
   type: 'bar',
   data: {
     labels: ['東日本橋','船橋','春日','巣鴨','祖師ヶ谷','下北沢','中目黒'],
