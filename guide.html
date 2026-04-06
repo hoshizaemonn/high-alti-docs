@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ハイアルチ PLダッシュボード 使い方説明書</title>
+<style>
+  :root {
+    --primary: #2196F3;
+    --primary-dark: #1565C0;
+    --primary-light: #BBDEFB;
+    --primary-bg: #E3F2FD;
+    --success: #4CAF50;
+    --warning: #FF9800;
+    --danger: #F44336;
+    --gray-50: #FAFAFA;
+    --gray-100: #F5F5F5;
+    --gray-200: #EEEEEE;
+    --gray-300: #E0E0E0;
+    --gray-400: #BDBDBD;
+    --gray-600: #757575;
+    --gray-700: #616161;
+    --gray-800: #424242;
+    --gray-900: #212121;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: .04em; }
+  .header p { margin-top: 8px; font-size: 14px; opacity: .85; }
+  .header .badge {
+    display: inline-block;
+    margin-top: 12px;
+    background: rgba(255,255,255,.2);
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  /* ===== TOC ===== */
+  .toc {
+    max-width: 800px;
+    margin: -24px auto 32px;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 28px 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .toc h2 { font-size: 18px; color: var(--primary-dark); margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin: 6px 0; }
+  .toc a { color: var(--primary); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* ===== Container ===== */
+  .container { max-width: 800px; margin: 0 auto; padding: 0 16px 64px; }
+
+  /* ===== Section Card ===== */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .card-header {
+    background: var(--primary-bg);
+    border-bottom: 2px solid var(--primary-light);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .card-header .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .card-header h2 { font-size: 20px; color: var(--gray-900); }
+  .card-body { padding: 24px; }
+  .card-body h3 {
+    font-size: 17px;
+    color: var(--primary-dark);
+    margin: 24px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .card-body h3:first-child { margin-top: 0; }
+  .card-body p { margin-bottom: 12px; color: var(--gray-700); }
+
+  /* ===== Diagram: Login ===== */
+  .login-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .login-box {
+    background: #fff;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .login-box .title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+  }
+  .login-input {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--gray-50);
+    color: var(--gray-600);
+    text-align: left;
+  }
+  .login-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 4px;
+    cursor: default;
+  }
+
+  /* Account types */
+  .account-types {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .account-card {
+    flex: 1;
+    min-width: 160px;
+    max-width: 220px;
+    border: 2px solid var(--gray-300);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .account-card.admin { border-color: var(--primary); }
+  .account-card.manager { border-color: var(--success); }
+  .account-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .account-card.admin .account-icon { background: var(--primary-bg); color: var(--primary); }
+  .account-card.manager .account-icon { background: #E8F5E9; color: var(--success); }
+  .account-card strong { display: block; font-size: 15px; margin-bottom: 4px; }
+  .account-card small { color: var(--gray-600); font-size: 13px; }
+
+  /* ===== Sidebar diagram ===== */
+  .screen-layout {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-height: 260px;
+  }
+  .sidebar-mock {
+    width: 180px;
+    flex-shrink: 0;
+    background: var(--gray-900);
+    color: #fff;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sidebar-mock .logo {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-700);
+    text-align: center;
+  }
+  .sidebar-mock .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: default;
+  }
+  .sidebar-mock .nav-item.active {
+    background: var(--primary);
+  }
+  .sidebar-mock .nav-item:not(.active):hover {
+    background: var(--gray-800);
+  }
+  .sidebar-mock .nav-icon { font-size: 16px; }
+  .sidebar-mock .user-info {
+    margin-top: auto;
+    padding: 8px;
+    border-top: 1px solid var(--gray-700);
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+  .main-area {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .page-desc {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--gray-50);
+  }
+  .page-desc .icon-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .page-desc .icon-circle.blue { background: var(--primary-bg); color: var(--primary); }
+  .page-desc .icon-circle.green { background: #E8F5E9; color: var(--success); }
+  .page-desc .icon-circle.orange { background: #FFF3E0; color: var(--warning); }
+
+  /* ===== KPI Cards ===== */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .kpi-card {
+    border: 2px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    background: #fff;
+  }
+  .kpi-card .label { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
+  .kpi-card .value { font-size: 22px; font-weight: 700; }
+  .kpi-card.blue { border-color: var(--primary); }
+  .kpi-card.blue .value { color: var(--primary); }
+  .kpi-card.red { border-color: var(--danger); }
+  .kpi-card.red .value { color: var(--danger); }
+  .kpi-card.orange { border-color: var(--warning); }
+  .kpi-card.orange .value { color: var(--warning); }
+  .kpi-card.green { border-color: var(--success); }
+  .kpi-card.green .value { color: var(--success); }
+
+  /* ===== PL Flow ===== */
+  .pl-flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .pl-flow-item {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    position: relative;
+  }
+  .pl-flow-item.revenue { background: #E3F2FD; color: var(--primary-dark); border: 2px solid var(--primary); }
+  .pl-flow-item.expense { background: #FFF3E0; color: #E65100; border: 2px solid var(--warning); }
+  .pl-flow-item.labor { background: #FCE4EC; color: #C62828; border: 2px solid var(--danger); }
+  .pl-flow-item.profit { background: #E8F5E9; color: #2E7D32; border: 2px solid var(--success); }
+  .pl-flow-arrow {
+    width: 2px;
+    height: 24px;
+    background: var(--gray-400);
+    position: relative;
+  }
+  .pl-flow-arrow::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: -4px;
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--gray-400);
+  }
+  .pl-flow-op {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin: -2px 0;
+    font-weight: 600;
+  }
+
+  /* ===== Member info ===== */
+  .member-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .member-stat {
+    flex: 1;
+    min-width: 120px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .member-stat .label { font-size: 12px; color: var(--gray-600); }
+  .member-stat .val { font-size: 20px; font-weight: 700; color: var(--primary-dark); }
+  .pie-mock {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary) 0% 40%, #64B5F6 40% 65%, #90CAF9 65% 80%, var(--primary-light) 80% 100%);
+    margin: 0 auto;
+    position: relative;
+    box-shadow: inset 0 0 0 24px #fff;
+  }
+  .pie-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .pie-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pie-legend .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* ===== Annual graphs mock ===== */
+  .graphs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .graph-box {
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    background: var(--gray-50);
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .graph-box .graph-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 60px;
+  }
+  .bar-chart .bar {
+    width: 14px;
+    border-radius: 3px 3px 0 0;
+    background: var(--primary);
+  }
+  .line-chart {
+    width: 100%;
+    height: 50px;
+    position: relative;
+  }
+  .line-chart svg { width: 100%; height: 100%; }
+
+  /* ===== Pulldown row ===== */
+  .pulldown-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    align-items: center;
+  }
+  .pulldown-item { flex: 1; min-width: 140px; }
+  .pulldown-item label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: 4px;
+  }
+  .pulldown-item .select-mock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+  }
+  .pulldown-item .select-mock::after {
+    content: "\25BC";
+    font-size: 10px;
+    color: var(--gray-400);
+  }
+
+  /* ===== Flow Chart ===== */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+  }
+  .flow-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+    background: var(--primary-bg);
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 420px;
+    text-align: left;
+  }
+  .flow-step.file { background: #E8EAF6; border: 1px solid #9FA8DA; color: #283593; }
+  .flow-step.action { background: #E3F2FD; border: 1px solid #90CAF9; color: var(--primary-dark); }
+  .flow-step.check { background: #FFF8E1; border: 1px solid #FFE082; color: #F57F17; }
+  .flow-step.save { background: #E8F5E9; border: 1px solid #A5D6A7; color: #2E7D32; }
+  .flow-step .step-icon { font-size: 18px; flex-shrink: 0; }
+  .flow-arrow-down {
+    width: 2px; height: 20px;
+    background: var(--gray-400);
+    position: relative;
+  }
+  .flow-arrow-down::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: -4px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--gray-400);
+  }
+
+  /* ===== Table ===== */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 10px 14px;
+    border: 1px solid var(--gray-200);
+    text-align: left;
+  }
+  th {
+    background: var(--primary-bg);
+    color: var(--primary-dark);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) { background: var(--gray-50); }
+  .text-center { text-align: center; }
+  .badge-ok {
+    display: inline-block;
+    background: #E8F5E9;
+    color: #2E7D32;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .badge-no {
+    display: inline-block;
+    background: #FFEBEE;
+    color: #C62828;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .badge-partial {
+    display: inline-block;
+    background: #FFF3E0;
+    color: #E65100;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ===== Budget table colors ===== */
+  .budget-positive { color: var(--success); font-weight: 600; }
+  .budget-negative { color: var(--danger); font-weight: 600; }
+
+  /* ===== Download mock ===== */
+  .download-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0;
+    padding: 20px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+    flex-wrap: wrap;
+  }
+  .dl-btn-mock {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: default;
+    white-space: nowrap;
+  }
+  .dl-arrow { font-size: 20px; color: var(--gray-400); }
+  .excel-mock {
+    border: 2px solid #2E7D32;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+    font-size: 12px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .excel-mock .excel-header {
+    background: #2E7D32;
+    color: #fff;
+    padding: 4px 8px;
+    margin: -12px -12px 8px;
+    border-radius: 6px 6px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ===== Expense table mock ===== */
+  .editable-mark {
+    position: relative;
+    display: inline-block;
+  }
+  .editable-mark::after {
+    content: "\270E";
+    position: absolute;
+    top: -2px;
+    right: -14px;
+    font-size: 11px;
+    color: var(--primary);
+  }
+
+  /* ===== Info box ===== */
+  .info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .info-box.tip { background: #E8F5E9; border-left: 4px solid var(--success); }
+  .info-box.note { background: var(--primary-bg); border-left: 4px solid var(--primary); }
+  .info-box.warn { background: #FFF3E0; border-left: 4px solid var(--warning); }
+  .info-box .info-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .header { padding: 32px 16px 28px; }
+    .header h1 { font-size: 22px; }
+    .toc { margin: -16px 16px 24px; padding: 20px; }
+    .card-body { padding: 16px; }
+    .screen-layout { flex-direction: column; }
+    .sidebar-mock { width: 100%; }
+    .graphs-grid { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .account-types { flex-direction: column; align-items: center; }
+    .download-area { flex-direction: column; text-align: center; }
+    .dl-arrow { transform: rotate(90deg); }
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    .header { background: #fff !important; color: #000 !important; padding: 16px; border-bottom: 2px solid #000; }
+    .header .badge { border: 1px solid #000; }
+    .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .card-header { background: #f0f0f0 !important; }
+    .toc { box-shadow: none; border: 1px solid #ccc; }
+    .flow, .pulldown-row, .download-area { background: #fff !important; }
+    .sidebar-mock { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .kpi-card, .member-stat, .graph-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>PLダッシュボード 使い方説明書</h1>
+  <p>High Altitude Management株式会社</p>
+  <span class="badge">ハイアルチ 管理者・店長向け</span>
+</div>
+
+<!-- ===== 目次 ===== -->
+<div class="toc">
+  <h2>目次</h2>
+  <ol>
+    <li><a href="#sec1">ログイン方法</a></li>
+    <li><a href="#sec2">画面の構成（3ページ）</a></li>
+    <li><a href="#sec3">ダッシュボードの見方</a></li>
+    <li><a href="#sec4">データの取込方法</a></li>
+    <li><a href="#sec5">経費明細の編集・保存</a></li>
+    <li><a href="#sec6">人件費サマリExcelダウンロード</a></li>
+    <li><a href="#sec7">予算実績対比の見方</a></li>
+    <li><a href="#sec8">権限の違い（管理者 vs 店長）</a></li>
+  </ol>
+</div>
+
+<div class="container">
+
+<!-- ===== 1. ログイン方法 ===== -->
+<div class="card" id="sec1">
+  <div class="card-header">
+    <span class="num">1</span>
+    <h2>ログイン方法</h2>
+  </div>
+  <div class="card-body">
+    <p>ダッシュボードにアクセスすると、以下のログイン画面が表示されます。</p>
+
+    <div class="login-diagram">
+      <div class="login-box">
+        <div class="title">PLダッシュボード ログイン</div>
+        <div class="login-input">&#x1F464; ユーザー名を入力</div>
+        <div class="login-input">&#x1F512; パスワードを入力</div>
+        <div class="login-btn">ログイン</div>
+      </div>
+    </div>
+
+    <p style="margin-top:16px;">ログイン後、サイドバーに自分の名前と権限が表示されます。アカウントは2種類あります:</p>
+
+    <div class="account-types">
+      <div class="account-card admin">
+        <div class="account-icon">&#x1F6E1;</div>
+        <strong>管理者</strong>
+        <small>全店舗のデータ閲覧<br>アップロード・設定すべて可能</small>
+      </div>
+      <div class="account-card manager">
+        <div class="account-icon">&#x1F3EA;</div>
+        <strong>店長（店舗マネージャー）</strong>
+        <small>自店舗のデータ中心<br>他店舗は一部制限あり</small>
+      </div>
+    </div>
+
+    <div class="info-box tip" style="margin-top:16px;">
+      <span class="info-icon">&#x1F4A1;</span>
+      <div>ログアウトは、サイドバーの下にある「ログアウト」ボタンを押してください。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 2. 画面の構成 ===== -->
+<div class="card" id="sec2">
+  <div class="card-header">
+    <span class="num">2</span>
+    <h2>画面の構成（3ページ）</h2>
+  </div>
+  <div class="card-body">
+    <p>左側のサイドバーで3つのページを切り替えます。</p>
+
+    <div class="screen-layout">
+      <div class="sidebar-mock">
+        <div class="logo">&#x1F3D4; ハイアルチ</div>
+        <div class="nav-item active">
+          <span class="nav-icon">&#x1F4CA;</span> ダッシュボード
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">&#x1F4E4;</span> アップロード
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">&#x2699;</span> 設定
+        </div>
+        <div class="user-info">
+          &#x1F464; 坪井太郎<br>
+          <span style="font-size:11px;">管理者</span><br>
+          <span style="color:#EF9A9A; margin-top:4px; display:inline-block;">ログアウト</span>
+        </div>
+      </div>
+      <div class="main-area">
+        <div class="page-desc">
+          <div class="icon-circle blue">&#x1F4CA;</div>
+          <div>
+            <strong>ダッシュボード</strong><br>
+            <span style="font-size:13px;color:var(--gray-600);">PL（損益計算書）・会員情報・各種グラフを閲覧。月別/年間表示を切替可能。</span>
+          </div>
+        </div>
+        <div class="page-desc">
+          <div class="icon-circle green">&#x1F4E4;</div>
+          <div>
+            <strong>アップロード</strong><br>
+            <span style="font-size:13px;color:var(--gray-600);">人件費・経費・売上・会員・予算のCSV/Excelファイルを取り込む画面。</span>
+          </div>
+        </div>
+        <div class="page-desc">
+          <div class="icon-circle orange">&#x2699;</div>
+          <div>
+            <strong>設定</strong><br>
+            <span style="font-size:13px;color:var(--gray-600);">従業員→店舗マッピング、経費分類ルール、ユーザー管理（管理者のみ）。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3. ダッシュボードの見方 ===== -->
+<div class="card" id="sec3">
+  <div class="card-header">
+    <span class="num">3</span>
+    <h2>ダッシュボードの見方</h2>
+  </div>
+  <div class="card-body">
+
+    <!-- 操作方法 -->
+    <h3>操作方法 ― 年度・期間・店舗の選択</h3>
+    <p>画面上部の3つのプルダウンで、表示する内容を切り替えます。</p>
+    <div class="pulldown-row">
+      <div class="pulldown-item">
+        <label>年度</label>
+        <div class="select-mock">2026</div>
+      </div>
+      <div class="pulldown-item">
+        <label>期間</label>
+        <div class="select-mock">4月</div>
+      </div>
+      <div class="pulldown-item">
+        <label>店舗</label>
+        <div class="select-mock">全体</div>
+      </div>
+    </div>
+    <div class="info-box note">
+      <span class="info-icon">&#x2139;</span>
+      <div>店舗は「東日本橋・春日・船橋・巣鴨・祖師ヶ谷大蔵・下北沢・中目黒・全体」から選べます。<br>「期間」を「年間」にすると年間表示に切り替わります。</div>
+    </div>
+
+    <!-- 月別表示 -->
+    <h3>月別表示</h3>
+    <p><strong>KPIカード</strong> ― 画面上部に4つの主要指標が表示されます。</p>
+    <div class="kpi-row">
+      <div class="kpi-card blue">
+        <div class="label">売上合計</div>
+        <div class="value">¥3.2M</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="label">人件費合計</div>
+        <div class="value">¥1.1M</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="label">経費合計</div>
+        <div class="value">¥0.6M</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="label">営業利益</div>
+        <div class="value">¥1.5M</div>
+      </div>
+    </div>
+
+    <p><strong>PL表の構造</strong> ― 損益計算書は以下の流れで計算されます。</p>
+    <div class="pl-flow">
+      <div class="pl-flow-item revenue">&#x1F4B0; 売上高（月会費 + パーソナル + オプション）</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-op">ー（マイナス）</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-item labor">&#x1F465; 人件費（正社員給与 + 契約社員給与）</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-op">ー（マイナス）</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-item expense">&#x1F4CB; 経費（各種経費科目の合計）</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-op">＝</div>
+      <div class="pl-flow-arrow"></div>
+      <div class="pl-flow-item profit">&#x2705; 営業利益</div>
+    </div>
+
+    <p><strong>会員情報セクション</strong></p>
+    <div class="member-row">
+      <div class="member-stat">
+        <div class="label">在籍数</div>
+        <div class="val">248名</div>
+      </div>
+      <div class="member-stat">
+        <div class="label">退会率</div>
+        <div class="val">3.2%</div>
+      </div>
+      <div class="member-stat" style="min-width:180px;">
+        <div class="label">プラン別会員（円グラフ）</div>
+        <div style="margin-top:8px;">
+          <div class="pie-mock"></div>
+          <div class="pie-legend">
+            <span><span class="dot" style="background:var(--primary);"></span>プランA</span>
+            <span><span class="dot" style="background:#64B5F6;"></span>プランB</span>
+            <span><span class="dot" style="background:#90CAF9;"></span>プランC</span>
+            <span><span class="dot" style="background:var(--primary-light);"></span>その他</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 年間表示 -->
+    <h3>年間表示</h3>
+    <p>「期間」を「年間」にすると、年間KPIカードと4つのグラフが表示されます。</p>
+    <div class="kpi-row">
+      <div class="kpi-card blue">
+        <div class="label">年間売上</div>
+        <div class="value">¥38M</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="label">年間人件費</div>
+        <div class="value">¥13M</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="label">年間経費</div>
+        <div class="value">¥7M</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="label">年間営業利益</div>
+        <div class="value">¥18M</div>
+      </div>
+    </div>
+    <div class="graphs-grid">
+      <div class="graph-box">
+        <div class="graph-title">&#x1F4C8; 売上推移（月別）</div>
+        <div class="bar-chart">
+          <div class="bar" style="height:30px;"></div>
+          <div class="bar" style="height:35px;"></div>
+          <div class="bar" style="height:40px;"></div>
+          <div class="bar" style="height:38px;"></div>
+          <div class="bar" style="height:45px;"></div>
+          <div class="bar" style="height:50px;"></div>
+          <div class="bar" style="height:42px;"></div>
+          <div class="bar" style="height:48px;"></div>
+          <div class="bar" style="height:55px;"></div>
+          <div class="bar" style="height:52px;"></div>
+          <div class="bar" style="height:58px;"></div>
+          <div class="bar" style="height:60px;"></div>
+        </div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">&#x1F465; 会員推移（月別）</div>
+        <div class="line-chart">
+          <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+            <polyline fill="none" stroke="#2196F3" stroke-width="2"
+              points="5,40 20,38 38,35 55,33 72,30 90,28 108,25 125,22 142,20 160,18 178,15 195,12" />
+            <polyline fill="none" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="4,3"
+              points="5,42 20,40 38,38 55,36 72,34 90,32 108,30 125,28 142,26 160,24 178,22 195,20" />
+          </svg>
+        </div>
+        <div style="font-size:11px;color:var(--gray-600);">
+          <span style="color:#2196F3;">&#x2500; 在籍数</span> &nbsp;
+          <span style="color:#90CAF9;">- - 退会数</span>
+        </div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">&#x1F4B0; 売上 vs 人件費</div>
+        <div class="bar-chart">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <div class="bar" style="height:50px;width:18px;background:var(--primary);"></div>
+            <div class="bar" style="height:20px;width:18px;background:var(--danger);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <div class="bar" style="height:45px;width:18px;background:var(--primary);"></div>
+            <div class="bar" style="height:22px;width:18px;background:var(--danger);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <div class="bar" style="height:55px;width:18px;background:var(--primary);"></div>
+            <div class="bar" style="height:18px;width:18px;background:var(--danger);border-radius:3px 3px 0 0;"></div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:4px;">
+          <span style="color:var(--primary);">&#x25A0; 売上</span> &nbsp;
+          <span style="color:var(--danger);">&#x25A0; 人件費</span>
+        </div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">&#x1F3E2; 店舗比較</div>
+        <div style="width:100%;text-align:left;font-size:12px;">
+          <div style="display:flex;align-items:center;gap:6px;margin:3px 0;">
+            <span style="width:60px;text-align:right;">東日本橋</span>
+            <div style="flex:1;height:14px;background:var(--gray-200);border-radius:4px;overflow:hidden;">
+              <div style="width:80%;height:100%;background:var(--primary);border-radius:4px;"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin:3px 0;">
+            <span style="width:60px;text-align:right;">春日</span>
+            <div style="flex:1;height:14px;background:var(--gray-200);border-radius:4px;overflow:hidden;">
+              <div style="width:65%;height:100%;background:#64B5F6;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin:3px 0;">
+            <span style="width:60px;text-align:right;">船橋</span>
+            <div style="flex:1;height:14px;background:var(--gray-200);border-radius:4px;overflow:hidden;">
+              <div style="width:55%;height:100%;background:#90CAF9;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin:3px 0;">
+            <span style="width:60px;text-align:right;">巣鴨</span>
+            <div style="flex:1;height:14px;background:var(--gray-200);border-radius:4px;overflow:hidden;">
+              <div style="width:45%;height:100%;background:var(--primary-light);border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. データの取込方法 ===== -->
+<div class="card" id="sec4">
+  <div class="card-header">
+    <span class="num">4</span>
+    <h2>データの取込方法</h2>
+  </div>
+  <div class="card-body">
+    <p>「アップロード」ページで4種類のデータを取り込みます。それぞれの手順は以下のとおりです。</p>
+
+    <!-- 人件費 -->
+    <h3>人件費（管理者のみ）</h3>
+    <div class="flow">
+      <div class="flow-title">人件費の取込フロー</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F4C4;</span> クラウド給与のExcel/CSVを用意</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x1F4E4;</span> 「アップロード」ボタンでファイルを選択</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> システムが自動解析（従業員名・金額を認識）</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step check"><span class="step-icon">&#x26A0;</span> 店舗不明の従業員がいれば → 手動で店舗を割当</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「保存」ボタンで確定</div>
+    </div>
+
+    <!-- 経費 -->
+    <h3>経費（2ステップ）</h3>
+    <div class="flow">
+      <div class="flow-title">経費の取込フロー</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F6D2;</span> <strong>STEP1:</strong> Amazon注文履歴CSVをアップロード</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> システムが取込・解析</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step file"><span class="step-icon">&#x1F3E6;</span> <strong>STEP2:</strong> PayPay銀行CSVをアップロード</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> キーワードルールで自動分類</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step check"><span class="step-icon">&#x26A0;</span> 未分類の明細 → 勘定科目を手動で選択</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「保存」ボタンで確定</div>
+    </div>
+
+    <!-- 売上・会員 -->
+    <h3>売上・会員（hacomono + Square）</h3>
+    <div class="flow">
+      <div class="flow-title">売上・会員の取込フロー</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F4C4;</span> hacomono CSVを3種類ダウンロード</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;">
+        <span style="background:#E3F2FD;padding:4px 12px;border-radius:16px;font-size:13px;font-weight:600;color:var(--primary-dark);">ML001: 会員リスト</span>
+        <span style="background:#E3F2FD;padding:4px 12px;border-radius:16px;font-size:13px;font-weight:600;color:var(--primary-dark);">PL001: 売上明細</span>
+        <span style="background:#E3F2FD;padding:4px 12px;border-radius:16px;font-size:13px;font-weight:600;color:var(--primary-dark);">MA002: 月次サマリ</span>
+      </div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x1F3EA;</span> 店舗を選択</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x1F4E4;</span> アップロード</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「保存」ボタンで確定</div>
+    </div>
+    <div class="info-box note" style="margin-top:8px;">
+      <span class="info-icon">&#x2139;</span>
+      <div><strong>Square売上</strong>は自動取込できないため、ダッシュボードから手動入力してください。</div>
+    </div>
+
+    <!-- 予算 -->
+    <h3>予算</h3>
+    <div class="flow">
+      <div class="flow-title">予算の取込フロー</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F4C4;</span> Excel予算書を用意</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x1F4E4;</span> 「アップロード」ボタンでファイルを選択</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> システムが自動解析</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「保存」ボタンで確定</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5. 経費明細の編集 ===== -->
+<div class="card" id="sec5">
+  <div class="card-header">
+    <span class="num">5</span>
+    <h2>経費明細の編集・保存</h2>
+  </div>
+  <div class="card-body">
+    <p>ダッシュボードの経費明細テーブルで、直接編集できます。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日付</th>
+            <th>摘要</th>
+            <th>金額</th>
+            <th>勘定科目 <span style="color:var(--primary);font-size:11px;">&#x270E; 編集可</span></th>
+            <th>内訳 <span style="color:var(--primary);font-size:11px;">&#x270E; 編集可</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4/1</td>
+            <td>Amazon - トレーニング器具</td>
+            <td style="text-align:right;">¥12,800</td>
+            <td style="background:#E3F2FD;">消耗品費</td>
+            <td style="background:#E3F2FD;">トレーニング用品</td>
+          </tr>
+          <tr>
+            <td>4/3</td>
+            <td>PayPay銀行 - 東京電力</td>
+            <td style="text-align:right;">¥45,200</td>
+            <td style="background:#E3F2FD;">水道光熱費</td>
+            <td style="background:#E3F2FD;">電気代</td>
+          </tr>
+          <tr>
+            <td>4/5</td>
+            <td>PayPay銀行 - ○○不動産</td>
+            <td style="text-align:right;">¥180,000</td>
+            <td style="background:#FFF8E1;">&#x26A0; 未分類 &#x25BC;</td>
+            <td style="background:#FFF8E1;">&#x26A0; 未入力 &#x25BC;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box tip">
+      <span class="info-icon">&#x1F4A1;</span>
+      <div><strong>自動ルール登録:</strong> 勘定科目を選んで保存すると、同じキーワードの明細に次回から自動適用されます。</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
+      <span style="background:var(--primary);color:#fff;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;">&#x1F4BE; 保存</span>
+      <span style="color:var(--gray-600);font-size:13px;">保存すると自動ルールも登録され、過去データにも反映</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+      <span style="background:var(--gray-700);color:#fff;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;">&#x1F4E5; CSVダウンロード</span>
+      <span style="color:var(--gray-600);font-size:13px;">経費明細をCSV形式で書き出し可能</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 6. 人件費サマリExcelダウンロード ===== -->
+<div class="card" id="sec6">
+  <div class="card-header">
+    <span class="num">6</span>
+    <h2>人件費サマリExcelダウンロード</h2>
+  </div>
+  <div class="card-body">
+    <p>管理者のみ利用可能です。ダッシュボードの人件費セクションからダウンロードできます。</p>
+
+    <div class="download-area">
+      <div class="dl-btn-mock">&#x1F4E5; 人件費サマリ ダウンロード</div>
+      <div class="dl-arrow">&#x2192;</div>
+      <div class="excel-mock">
+        <div class="excel-header">&#x1F4CA; 人件費サマリ.xlsx</div>
+        <table style="font-size:11px;width:100%;">
+          <tr style="background:#E8F5E9;">
+            <th style="padding:4px 6px;border:1px solid #ccc;">店舗</th>
+            <th style="padding:4px 6px;border:1px solid #ccc;">正社員給与</th>
+            <th style="padding:4px 6px;border:1px solid #ccc;">契約社員給与</th>
+            <th style="padding:4px 6px;border:1px solid #ccc;">法定福利</th>
+            <th style="padding:4px 6px;border:1px solid #ccc;">通勤手当</th>
+            <th style="padding:4px 6px;border:1px solid #ccc;">総勤務時間</th>
+          </tr>
+          <tr>
+            <td style="padding:4px 6px;border:1px solid #eee;">東日本橋</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥420,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥180,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥85,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥15,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">320h</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 6px;border:1px solid #eee;">春日</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥380,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥150,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥72,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">¥12,000</td>
+            <td style="padding:4px 6px;border:1px solid #eee;text-align:right;">280h</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-box warn">
+      <span class="info-icon">&#x1F512;</span>
+      <div>この機能は<strong>管理者アカウント</strong>でログインした場合のみ表示されます。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 7. 予算実績対比 ===== -->
+<div class="card" id="sec7">
+  <div class="card-header">
+    <span class="num">7</span>
+    <h2>予算実績対比の見方</h2>
+  </div>
+  <div class="card-body">
+    <p>特定の店舗を選択すると、予算と実績の比較テーブルが表示されます。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>カテゴリ</th>
+            <th>科目</th>
+            <th style="text-align:right;">予算</th>
+            <th style="text-align:right;">実績</th>
+            <th style="text-align:right;">差額</th>
+            <th style="text-align:right;">予算比</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="3" style="background:#E3F2FD;font-weight:600;color:var(--primary-dark);vertical-align:middle;">売上系</td>
+            <td>月会費</td>
+            <td style="text-align:right;">¥2,000,000</td>
+            <td style="text-align:right;">¥2,150,000</td>
+            <td style="text-align:right;" class="budget-positive">+¥150,000</td>
+            <td style="text-align:right;" class="budget-positive">107.5%</td>
+          </tr>
+          <tr>
+            <td>パーソナル</td>
+            <td style="text-align:right;">¥800,000</td>
+            <td style="text-align:right;">¥720,000</td>
+            <td style="text-align:right;" class="budget-negative">-¥80,000</td>
+            <td style="text-align:right;" class="budget-negative">90.0%</td>
+          </tr>
+          <tr>
+            <td>オプション</td>
+            <td style="text-align:right;">¥400,000</td>
+            <td style="text-align:right;">¥410,000</td>
+            <td style="text-align:right;" class="budget-positive">+¥10,000</td>
+            <td style="text-align:right;" class="budget-positive">102.5%</td>
+          </tr>
+          <tr>
+            <td rowspan="2" style="background:#FCE4EC;font-weight:600;color:#C62828;vertical-align:middle;">人件費系</td>
+            <td>正社員給与</td>
+            <td style="text-align:right;">¥450,000</td>
+            <td style="text-align:right;">¥420,000</td>
+            <td style="text-align:right;" class="budget-positive">+¥30,000</td>
+            <td style="text-align:right;" class="budget-positive">93.3%</td>
+          </tr>
+          <tr>
+            <td>契約社員給与</td>
+            <td style="text-align:right;">¥200,000</td>
+            <td style="text-align:right;">¥180,000</td>
+            <td style="text-align:right;" class="budget-positive">+¥20,000</td>
+            <td style="text-align:right;" class="budget-positive">90.0%</td>
+          </tr>
+          <tr>
+            <td rowspan="2" style="background:#FFF3E0;font-weight:600;color:#E65100;vertical-align:middle;">経費系</td>
+            <td>水道光熱費</td>
+            <td style="text-align:right;">¥50,000</td>
+            <td style="text-align:right;">¥62,000</td>
+            <td style="text-align:right;" class="budget-negative">-¥12,000</td>
+            <td style="text-align:right;" class="budget-negative">124.0%</td>
+          </tr>
+          <tr>
+            <td>消耗品費</td>
+            <td style="text-align:right;">¥30,000</td>
+            <td style="text-align:right;">¥28,000</td>
+            <td style="text-align:right;" class="budget-positive">+¥2,000</td>
+            <td style="text-align:right;" class="budget-positive">93.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box note">
+      <span class="info-icon">&#x2139;</span>
+      <div>
+        <strong>色の見方:</strong><br>
+        <span class="budget-positive">緑色</span> = 予算に対して良い方向（売上が予算超え、経費が予算以下）<br>
+        <span class="budget-negative">赤色</span> = 予算に対して注意が必要（売上が未達、経費が予算超え）
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 8. 権限マトリクス ===== -->
+<div class="card" id="sec8">
+  <div class="card-header">
+    <span class="num">8</span>
+    <h2>権限の違い（管理者 vs 店長）</h2>
+  </div>
+  <div class="card-body">
+    <p>アカウントの権限によって、操作できる範囲が異なります。</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>機能</th>
+            <th class="text-center" style="min-width:80px;">管理者</th>
+            <th class="text-center" style="min-width:100px;">店長（自店舗）</th>
+            <th class="text-center" style="min-width:100px;">店長（他店舗）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ダッシュボード閲覧</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+          </tr>
+          <tr>
+            <td>KPI・PL表の閲覧</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+          </tr>
+          <tr>
+            <td>会員情報の閲覧</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+          </tr>
+          <tr>
+            <td>人件費内訳の閲覧</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>従業員別明細の閲覧</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>経費明細の編集</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-partial">&#x25B3;</span></td>
+          </tr>
+          <tr>
+            <td>データアップロード</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>人件費アップロード</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>人件費サマリExcelダウンロード</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>設定画面（従業員マッピング等）</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+          <tr>
+            <td>ユーザー管理</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+            <td class="text-center"><span class="badge-no">&#x2715;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:13px;">
+      <span><span class="badge-ok">&#x25CB;</span> = 利用可能</span>
+      <span><span class="badge-partial">&#x25B3;</span> = 一部制限あり</span>
+      <span><span class="badge-no">&#x2715;</span> = 利用不可</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.container -->
+
+<div style="text-align:center;padding:24px;color:var(--gray-400);font-size:12px;">
+  &copy; High Altitude Management株式会社 &#x2014; PLダッシュボード 使い方説明書
+</div>
+
+</body>
+</html>

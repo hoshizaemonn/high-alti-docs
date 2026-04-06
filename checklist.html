@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ハイアルチ PLダッシュボード — 安蒜さんと詰める部分まとめ</title>
+<style>
+  :root {
+    --accent: #FF6B35;
+    --accent-light: #FFF3ED;
+    --high: #DC2626;
+    --high-bg: #FEF2F2;
+    --mid: #F97316;
+    --mid-bg: #FFF7ED;
+    --low: #2563EB;
+    --low-bg: #EFF6FF;
+    --manual-bg: #FFFBEB;
+    --manual-border: #F59E0B;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    background: #F5F5F7;
+    color: var(--gray-900);
+    line-height: 1.7;
+    padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--accent), #E85D2C);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+  .header p { font-size: 0.9rem; opacity: 0.9; }
+  .header .meta { margin-top: 12px; font-size: 0.8rem; opacity: 0.75; }
+
+  /* Card */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .card-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .card-header h2 { font-size: 1.15rem; font-weight: 700; }
+  .card-body { padding: 24px; }
+  .card-body > *:last-child { margin-bottom: 0; }
+
+  /* Priority badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high); }
+  .badge-mid  { background: var(--mid-bg);  color: var(--mid);  border: 1px solid var(--mid); }
+  .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low); }
+
+  /* Warning box */
+  .warning {
+    background: var(--high-bg);
+    border: 2px solid var(--high);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: var(--high);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .warning::before { content: "\26A0\FE0F"; font-size: 1.2rem; flex-shrink: 0; }
+
+  /* Info box */
+  .info-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .info-box h4 { font-size: 0.85rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 20px 0;
+  }
+  .flow-item {
+    background: var(--accent-light);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    min-width: 120px;
+  }
+  .flow-item.danger {
+    background: var(--high-bg);
+    border-color: var(--high);
+    color: var(--high);
+  }
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: var(--gray-300);
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tbody tr:nth-child(even) { background: var(--gray-50); }
+  tbody tr:hover { background: var(--accent-light); }
+  .manual-row { background: var(--manual-bg) !important; }
+  .manual-row td { border-left: 3px solid var(--manual-border); }
+
+  /* Missing items (red frame) */
+  .missing-box {
+    border: 2px solid var(--high);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    background: var(--high-bg);
+  }
+  .missing-box h4 { color: var(--high); font-size: 0.9rem; margin-bottom: 10px; }
+  .missing-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+  }
+  .missing-list li {
+    background: #fff;
+    border: 1px solid var(--high);
+    color: var(--high);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; margin: 20px 0 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 0.9rem;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--gray-300);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .checklist-label { font-weight: 500; margin-bottom: 0; }
+  .section-divider {
+    border: none;
+    border-top: 2px dashed var(--gray-200);
+    margin: 16px 0 12px;
+  }
+  .check-heading {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  /* KPI grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .kpi-card {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .kpi-card .kpi-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .kpi-card .kpi-desc { font-size: 0.78rem; color: var(--gray-500); }
+
+  /* Compare table special */
+  .compare-table th:first-child { width: 140px; }
+  .pro { color: #16A34A; font-weight: 600; }
+  .con { color: var(--high); font-weight: 600; }
+
+  /* Action table */
+  .action-table th { background: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.2rem; }
+    .card-body { padding: 16px; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 8px 10px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; padding: 0; font-size: 10pt; }
+    .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .header { background: #fff; color: #000; border: 2px solid var(--accent); }
+    .checkbox {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #000;
+      border-radius: 4px;
+    }
+    .checklist li { padding: 12px 0; }
+    .warning { border-width: 3px; }
+    .badge-high, .badge-mid, .badge-low { border-width: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>ハイアルチ PLダッシュボード<br>安蒜さんと詰める部分まとめ</h1>
+  <p>確認事項 全7セクション / チェックリスト付き</p>
+  <div class="meta">対象: 安蒜さん / 開発チーム（鈴木さん） | 作成: 2026-04-06</div>
+</div>
+
+<!-- ========================================== -->
+<!-- 1. Square売上とhacomono売上の重複確認 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">1</div>
+    <h2>Square売上とhacomono売上の重複確認 <span class="badge badge-high">優先度: 高</span></h2>
+  </div>
+  <div class="card-body">
+    <div class="info-box">
+      <h4>現状のデータフロー</h4>
+    </div>
+    <div class="flow">
+      <div class="flow-item">hacomono PL001<br><small>月会費・パーソナル等</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-item">Square売上<br><small>物販・現地決済</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">合算</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">ダッシュボード<br><small>PL表 売上高</small></div>
+    </div>
+
+    <div class="warning">
+      二重計上リスク: hacomonoの売上明細にSquare経由の決済が含まれている場合、売上が二重に計上されます。
+    </div>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">hacomonoの売上明細にSquare経由の決済が含まれていないか？（二重計上のリスク）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">各店舗で「hacomonoに計上される売上」と「Squareに計上される売上」の線引きは？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">Square側で集計されるのは物販のみ？体験やスポット利用も含まれる？</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 2. 予算書の科目マッピング -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">2</div>
+    <h2>予算書の科目マッピング <span class="badge badge-high">優先度: 高</span></h2>
+  </div>
+  <div class="card-body">
+
+    <!-- 売上系 -->
+    <div class="info-box"><h4>売上系</h4></div>
+    <table>
+      <thead><tr><th>予算科目</th><th>データソース</th><th>マッピング先</th></tr></thead>
+      <tbody>
+        <tr><td>月会費収入</td><td>hacomono PL001</td><td>「月会費」カテゴリ</td></tr>
+        <tr><td>パーソナル・物販・その他収入</td><td>hacomono PL001</td><td>「パーソナル」「オプション」「スポット」「入会金」「ロッカー」「その他」</td></tr>
+        <tr><td>サービス収入</td><td>hacomono PL001</td><td>「体験」カテゴリ</td></tr>
+        <tr class="manual-row"><td>自販機手数料収入</td><td>手動入力</td><td>システム未連携</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 人件費系 -->
+    <div class="info-box"><h4>人件費系</h4></div>
+    <table>
+      <thead><tr><th>予算科目</th><th>データソース</th><th>マッピング先</th></tr></thead>
+      <tbody>
+        <tr><td>正社員・契約社員給与</td><td>クラウド給与</td><td>課税支給合計</td></tr>
+        <tr><td>賞与</td><td>クラウド給与</td><td>bonus（現在データなし）</td></tr>
+        <tr><td>通勤手当</td><td>クラウド給与</td><td>通勤手当（課税+非課税）</td></tr>
+        <tr><td>法定福利費</td><td>クラウド給与</td><td>健保+介護+厚年+児童手当+基金+雇用+労災+一般拠出 会社負担分</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 経費系 -->
+    <div class="info-box"><h4>経費系</h4></div>
+    <table>
+      <thead><tr><th>予算科目</th><th>データソース</th><th>自動分類ラベル</th></tr></thead>
+      <tbody>
+        <tr><td>広告宣伝費</td><td>PayPay銀行CSV</td><td>広告宣伝費</td></tr>
+        <tr><td>消耗品費</td><td>PayPay銀行CSV</td><td>消耗品費</td></tr>
+        <tr><td>通信費</td><td>PayPay銀行CSV</td><td>通信費</td></tr>
+        <tr><td>委託料</td><td>PayPay銀行CSV</td><td>委託料</td></tr>
+        <tr><td>賃借料</td><td>PayPay銀行CSV</td><td>賃借料</td></tr>
+        <tr><td>支払手数料</td><td>PayPay銀行CSV</td><td>支払手数料</td></tr>
+        <tr><td>電気料</td><td>PayPay銀行CSV</td><td>電気料</td></tr>
+        <tr><td>上下水道料</td><td>PayPay銀行CSV</td><td>上下水道料</td></tr>
+        <tr><td>福利厚生費</td><td>PayPay銀行CSV</td><td>福利厚生費</td></tr>
+        <tr><td>修繕費</td><td>PayPay銀行CSV</td><td>修繕費</td></tr>
+        <tr><td>研修費</td><td>PayPay銀行CSV</td><td>研修費</td></tr>
+        <tr><td>リース料</td><td>PayPay銀行CSV</td><td>リース料</td></tr>
+        <tr><td>保険料</td><td>PayPay銀行CSV</td><td>保険料</td></tr>
+        <tr><td>接待交際費</td><td>PayPay銀行CSV</td><td>接待交際費</td></tr>
+        <tr><td>租税公課</td><td>PayPay銀行CSV</td><td>租税公課</td></tr>
+        <tr class="manual-row"><td>減価償却費</td><td>手動入力</td><td>システム未連携</td></tr>
+        <tr><td>備品費</td><td>PayPay銀行CSV</td><td>備品費</td></tr>
+        <tr class="manual-row"><td>開発費償却</td><td>手動入力</td><td>システム未連携</td></tr>
+        <tr class="manual-row"><td>仕入高</td><td>手動入力</td><td>システム未連携</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:0.82rem; color:var(--gray-500); margin-bottom:16px;">
+      <span style="display:inline-block; width:14px; height:14px; background:var(--manual-bg); border:1px solid var(--manual-border); border-radius:3px; vertical-align:middle;"></span>
+      黄色背景 = 手動入力（システム未連携）
+    </p>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">上記のマッピングで問題ないか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">予算書にあってシステムにない科目はないか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">「パーソナル・物販・その他収入」の括りで合っているか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">「サービス収入 = 体験」で合っているか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">自販機手数料収入のデータ元は？</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 3. 経費の勘定科目で足りないもの -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">3</div>
+    <h2>経費の勘定科目で足りないもの <span class="badge badge-high">優先度: 高</span></h2>
+  </div>
+  <div class="card-body">
+
+    <div class="info-box"><h4>現在登録済みの自動分類ルール</h4></div>
+    <table>
+      <thead><tr><th>摘要キーワード</th><th>分類先 勘定科目</th></tr></thead>
+      <tbody>
+        <tr><td>AMAZON / ＡＭＡＺＯＮ</td><td>消耗品費</td></tr>
+        <tr><td>プリントパック / ラクスル</td><td>広告宣伝費</td></tr>
+        <tr><td>ダスキン / セコム / SMBC</td><td>委託料</td></tr>
+        <tr><td>テレポ / BIZIMO</td><td>通信費</td></tr>
+        <tr><td>ダイワショウケン</td><td>賃借料</td></tr>
+        <tr><td>ネットプロテクション / 振込手数料</td><td>支払手数料</td></tr>
+      </tbody>
+    </table>
+
+    <div class="missing-box">
+      <h4>キーワード未設定の科目（要対応）</h4>
+      <ul class="missing-list">
+        <li>電気料</li>
+        <li>上下水道料</li>
+        <li>福利厚生費</li>
+        <li>修繕費</li>
+        <li>研修費</li>
+        <li>リース料</li>
+        <li>保険料</li>
+        <li>接待交際費</li>
+        <li>租税公課</li>
+        <li>備品費</li>
+      </ul>
+    </div>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">各科目のPayPay銀行摘要キーワードは？（安蒜さんにリスト提供をお願い）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">「雑費」「その他」に分類されているが本来は別科目のものはないか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">PayPay銀行以外の支払はあるか？（クレカ・現金等）</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 4. 退会者データ（ML012）の活用方法 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">4</div>
+    <h2>退会者データ（ML012）の活用方法 <span class="badge badge-mid">優先度: 中</span></h2>
+  </div>
+  <div class="card-body">
+
+    <div class="info-box"><h4>現状のデータフロー</h4></div>
+    <div class="flow">
+      <div class="flow-item">ML001<br><small>メンバー一覧</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">MA002<br><small>退会数・退会率</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">ダッシュボード<br><small>集計値のみ</small></div>
+    </div>
+
+    <div class="info-box"><h4>ML012を追加した場合の将来イメージ</h4></div>
+    <div class="flow">
+      <div class="flow-item">ML001<br><small>メンバー一覧</small></div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-item" style="border-color:var(--mid); background:#FFF7ED;">ML012<br><small>退会者詳細</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">MA002<br><small>退会数・退会率</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-item">ダッシュボード<br><small>退会分析・KPI</small></div>
+    </div>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">ML012の活用ニーズは？（退会理由分析、退会防止施策の効果測定 等）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">ML012のCSVフォーマットを入手可能か？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">個別リスト表示 vs 集計値のみ、どちらが必要？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">退会防止KPIとして追いたい指標は何か？</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 5. 販促報告フォーマットの要件 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">5</div>
+    <h2>販促報告フォーマットの要件 <span class="badge badge-mid">優先度: 中</span></h2>
+  </div>
+  <div class="card-body">
+
+    <div class="info-box"><h4>現状</h4>
+      <p style="margin:0; font-size:0.88rem;">PL・会員情報のみ表示。販促特化の報告機能なし。</p>
+    </div>
+
+    <div class="info-box"><h4>販促報告に使えそうなKPI一覧</h4></div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-name">体験者数</div>
+        <div class="kpi-desc">月間の体験参加人数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-name">体験→入会 転換率</div>
+        <div class="kpi-desc">体験者のうち入会した割合</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-name">広告費</div>
+        <div class="kpi-desc">Google / Meta 等の出稿費</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-name">CPA</div>
+        <div class="kpi-desc">1件あたりの獲得コスト</div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">必要な項目は？（体験者数、転換率、広告費、CPA 等）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">報告頻度は？（月次 / 週次 / 日次）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">報告先は？（坪井社長 / FCオーナー / 本部 等）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">Google / Meta広告のAPI連携は今後必要？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">フォーマットの希望は？（PDF / Excel / ダッシュボード内表示）</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 6. 本番デプロイの時期・方法 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">6</div>
+    <h2>本番デプロイの時期・方法 <span class="badge badge-mid">優先度: 中</span></h2>
+  </div>
+  <div class="card-body">
+
+    <div class="info-box">
+      <h4>現状</h4>
+      <p style="margin:0; font-size:0.88rem;">ローカル Streamlit + ngrok で一時共有中</p>
+    </div>
+
+    <div class="info-box"><h4>デプロイ選択肢の比較</h4></div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>選択肢</th><th>メリット</th><th>デメリット</th><th>コスト目安</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>クラウド</strong><br><small>(AWS / GCP / Azure)</small></td>
+          <td class="pro">安定稼働、スケーラブル、SSL標準、バックアップ容易</td>
+          <td class="con">月額費用、設定がやや複雑</td>
+          <td>月3,000〜10,000円</td>
+        </tr>
+        <tr>
+          <td><strong>社内PC常設</strong></td>
+          <td class="pro">追加費用なし、データが社内に残る</td>
+          <td class="con">PCの電源管理、停電リスク、外部アクセス設定が必要</td>
+          <td>電気代程度</td>
+        </tr>
+        <tr>
+          <td><strong>Streamlit Cloud</strong></td>
+          <td class="pro">無料枠あり、デプロイ簡単、Streamlitと親和性高い</td>
+          <td class="con">無料枠の制限、カスタムドメイン不可（有料では可）、データの外部保存</td>
+          <td>無料〜月$250</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr class="section-divider">
+    <div class="check-heading">確認チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">いつから本番運用開始？（スケジュール上は 4/25〜）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">デプロイ先の希望は？（クラウド / 社内PC / Streamlit Cloud）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">同時利用者数は？（数名 / 10名以上）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">独自ドメインの希望はあるか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">バックアップ方針は？（自動 / 手動 / 不要）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">SSL（https）は必須か？</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 7. adminパスワードの変更 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num">7</div>
+    <h2>adminパスワードの変更 <span class="badge badge-high">優先度: 高</span></h2>
+  </div>
+  <div class="card-body">
+
+    <div class="warning">
+      セキュリティリスク: 現在デフォルトパスワード <code style="background:#fff;padding:2px 6px;border-radius:4px;">admin123</code> のまま運用中。パスワード変更画面は未実装。
+    </div>
+
+    <hr class="section-divider">
+    <div class="check-heading">対応方針チェックリスト</div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div><span class="checklist-label">本番デプロイ前にパスワードを変更する（必須）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">パスワード変更機能の画面をシステムに追加するか？</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">パスワード管理方針は？（管理者のみ / ユーザー別アカウント）</span></li>
+      <li><div class="checkbox"></div><span class="checklist-label">パスワードルール（文字数・複雑さ）は必要か？</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 次のアクション一覧 -->
+<!-- ========================================== -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-num" style="background:var(--gray-900);">&rarr;</div>
+    <h2>次のアクション一覧</h2>
+  </div>
+  <div class="card-body">
+    <table class="action-table">
+      <thead>
+        <tr><th>項目</th><th>優先度</th><th>担当</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Square / hacomono 重複確認</td>
+          <td><span class="badge badge-high">高</span></td>
+          <td>安蒜さん確認</td>
+        </tr>
+        <tr>
+          <td>予算科目マッピング確認</td>
+          <td><span class="badge badge-high">高</span></td>
+          <td>安蒜さん確認</td>
+        </tr>
+        <tr>
+          <td>不足勘定科目のキーワード提供</td>
+          <td><span class="badge badge-high">高</span></td>
+          <td>安蒜さん確認</td>
+        </tr>
+        <tr>
+          <td>adminパスワード変更</td>
+          <td><span class="badge badge-high">高</span></td>
+          <td>開発側で機能追加 → 安蒜さんが変更</td>
+        </tr>
+        <tr>
+          <td>本番デプロイ方法決定</td>
+          <td><span class="badge badge-mid">中</span></td>
+          <td>坪井社長・安蒜さんと相談</td>
+        </tr>
+        <tr>
+          <td>ML012フォーマット入手</td>
+          <td><span class="badge badge-mid">中</span></td>
+          <td>安蒜さん</td>
+        </tr>
+        <tr>
+          <td>販促報告フォーマット要件</td>
+          <td><span class="badge badge-mid">中</span></td>
+          <td>安蒜さん・坪井社長</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="text-align:center; padding:24px 0; color:var(--gray-500); font-size:0.78rem;">
+  ハイアルチ PLダッシュボード 確認事項まとめ | 2026-04-06 作成
+</div>
+
+</body>
+</html>
