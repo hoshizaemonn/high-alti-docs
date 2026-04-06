@@ -69,7 +69,7 @@
   .drill-detail td:first-child { border-left: 3px solid #3498db; }
 
   /* 取込画面 */
-  .upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+  .upload-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px; }
   .upload-box { border: 2px dashed #ccc; border-radius: 12px; padding: 20px; text-align: center; background: white; transition: all 0.2s; }
   .upload-box.done { border-color: #27ae60; border-style: solid; background: #f0fdf4; }
   .upload-box .icon { font-size: 32px; margin-bottom: 6px; }
@@ -150,7 +150,7 @@
   <div class="section" id="concept">
     <div class="section-title"><div class="section-num dark">1</div>コンセプト</div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
       <div style="background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid #3498db;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <div style="font-size:32px;">💰</div>
         <div style="font-size:14px;font-weight:700;margin-top:8px;">人件費CSV</div>
@@ -165,6 +165,11 @@
         <div style="font-size:32px;">📈</div>
         <div style="font-size:14px;font-weight:700;margin-top:8px;">売上・会員CSV</div>
         <div style="font-size:12px;color:#7f8c8d;">hacomono</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:20px;text-align:center;border:2px solid #f39c12;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;">🎯</div>
+        <div style="font-size:14px;font-weight:700;margin-top:8px;">予算Excel</div>
+        <div style="font-size:12px;color:#7f8c8d;">予算書</div>
       </div>
     </div>
     <div style="text-align:center;font-size:28px;color:#bdc3c7;margin:8px 0;">▼ ▼ ▼</div>
@@ -208,6 +213,12 @@
           <div class="desc">CSVをここにドロップ</div>
           <div class="status pending">— 未取込</div>
         </div>
+        <div class="upload-box">
+          <div class="icon">🎯</div>
+          <div class="title">予算</div>
+          <div class="desc">Excel予算書をドロップ</div>
+          <div class="status pending">— 未取込</div>
+        </div>
       </div>
 
       <div style="text-align:center;">
@@ -216,7 +227,7 @@
     </div>
 
     <div class="highlight-box orange">
-      <strong>段階的に埋まる：</strong>人件費だけ入れればPLの人件費部分だけ表示。経費→経費部分追加。売上→完成。順番は自由。
+      <strong>段階的に埋まる：</strong>人件費だけ入れればPLの人件費部分だけ表示。経費→経費部分追加。売上→PL完成。予算→予算実績対比が追加。順番は自由。
     </div>
   </div>
 
@@ -562,7 +573,8 @@
         <tbody>
           <tr><td>①</td><td>クラウド給与から人件費CSVを取込</td><td>PLの<strong>人件費</strong>部分＋従業員詳細が埋まる</td></tr>
           <tr><td>②</td><td>PayPay銀行から経費CSVを取込</td><td>PLの<strong>経費</strong>部分が埋まる</td></tr>
-          <tr><td>③</td><td>hacomonoから売上・会員CSVを取込</td><td>PLの<strong>売上</strong>部分＋グラフが埋まる → <strong>PL完成 = 会議資料</strong></td></tr>
+          <tr><td>③</td><td>hacomonoから売上・会員CSVを取込</td><td>PLの<strong>売上</strong>部分＋グラフが埋まる → <strong>PL完成</strong></td></tr>
+          <tr><td>④</td><td>予算書Excelを取込</td><td><strong>予算実績対比</strong>が表示される → <strong>会議資料完成</strong></td></tr>
         </tbody>
       </table>
       <p style="font-size:12px;color:#7f8c8d;margin-top:8px;">※ ①②③の順番は自由。入れた分だけPLが埋まる。</p>
