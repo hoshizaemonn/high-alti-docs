@@ -1007,9 +1007,18 @@
     <h2>データの取込方法</h2>
   </div>
   <div class="card-body">
-    <p>「アップロード」ページで4種類のデータを取り込みます。それぞれの手順は以下のとおりです。</p>
+    <p>「アップロード」ページで4種類のデータを取り込みます。画面上部のタブで切り替えます。</p>
+
+    <!-- Tab UI -->
+    <div style="display:flex;gap:0;margin:16px 0 24px;border-bottom:2px solid var(--gray-300);flex-wrap:wrap;">
+      <a href="#flow-payroll" style="padding:10px 20px;font-size:14px;font-weight:600;color:var(--gray-600);text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;">💰 人件費</a>
+      <a href="#flow-expense" style="padding:10px 20px;font-size:14px;font-weight:600;color:var(--gray-600);text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;">🧾 経費</a>
+      <a href="#flow-sales" style="padding:10px 20px;font-size:14px;font-weight:600;color:var(--gray-600);text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-2px;">📈 売上</a>
+      <a href="#flow-budget" style="padding:10px 20px;font-size:14px;font-weight:600;color:var(--primary);text-decoration:none;border-bottom:3px solid var(--primary);margin-bottom:-2px;">🎯 予算</a>
+    </div>
 
     <!-- 人件費 -->
+    <div id="flow-payroll"></div>
     <h3>人件費（管理者のみ）</h3>
     <div class="flow">
       <div class="flow-title">人件費の取込フロー</div>
@@ -1025,6 +1034,7 @@
     </div>
 
     <!-- 経費 -->
+    <div id="flow-expense"></div>
     <h3>経費（2ステップ）</h3>
     <div class="flow">
       <div class="flow-title">経費の取込フロー</div>
@@ -1042,6 +1052,7 @@
     </div>
 
     <!-- 売上・会員 -->
+    <div id="flow-sales"></div>
     <h3>売上・会員（hacomono + Square）</h3>
     <div class="flow">
       <div class="flow-title">売上・会員の取込フロー</div>
@@ -1064,16 +1075,19 @@
     </div>
 
     <!-- 予算 -->
-    <h3>予算</h3>
+    <div id="flow-budget"></div>
+    <h3>🎯 予算</h3>
     <div class="flow">
-      <div class="flow-title">予算の取込フロー</div>
-      <div class="flow-step file"><span class="step-icon">&#x1F4C4;</span> Excel予算書を用意</div>
+      <div class="flow-title">予算の取込フロー（アップロード → 🎯予算タブ）</div>
+      <div class="flow-step action"><span class="step-icon">&#x1F3EA;</span> 対象店舗・年・月を選択</div>
       <div class="flow-arrow-down"></div>
-      <div class="flow-step action"><span class="step-icon">&#x1F4E4;</span> 「アップロード」ボタンでファイルを選択</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F4C4;</span> Excel予算書をアップロード</div>
       <div class="flow-arrow-down"></div>
-      <div class="flow-step action"><span class="step-icon">&#x2699;</span> システムが自動解析</div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> 「▶ 予算データを解析する」ボタンで自動解析</div>
       <div class="flow-arrow-down"></div>
-      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「保存」ボタンで確定</div>
+      <div class="flow-step check"><span class="step-icon">&#x1F440;</span> 解析結果（科目・金額）を画面で確認</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step save"><span class="step-icon">&#x2705;</span> 「💾 この内容で保存する」ボタンで確定</div>
     </div>
   </div>
 </div>
