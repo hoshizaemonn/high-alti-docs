@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ハイアルチ PLダッシュボード 使い方説明書</title>
+<title>ハイアルチ 業績ダッシュボード 使い方説明書</title>
 <style>
   :root {
     --primary: #2196F3;
@@ -683,7 +683,7 @@
 
 <!-- ===== HEADER ===== -->
 <div class="header">
-  <h1>PLダッシュボード 使い方説明書</h1>
+  <h1>業績ダッシュボード 使い方説明書</h1>
   <p>High Altitude Management株式会社</p>
   <span class="badge">ハイアルチ 管理者・店長向け</span>
 </div>
@@ -701,6 +701,10 @@
     <li><a href="#sec7">予算実績対比の見方</a></li>
     <li><a href="#sec8">権限の違い（管理者 vs 店長）</a></li>
   </ol>
+  <div style="margin-top:16px;padding:12px 16px;background:#E8F5E9;border-radius:8px;font-size:14px;">
+    &#x1F3AC; <strong>操作動画</strong>: <a href="https://hoshizaemonn.github.io/high-alti-docs/guide.html" style="color:var(--primary);">こちらから操作動画も確認できます</a>
+    <!-- TODO: Loom動画URLに差し替え -->
+  </div>
 </div>
 
 <div class="container">
@@ -716,7 +720,7 @@
 
     <div class="login-diagram">
       <div class="login-box">
-        <div class="title">PLダッシュボード ログイン</div>
+        <div class="title">業績ダッシュボード ログイン</div>
         <div class="login-input">&#x1F464; ユーザー名を入力</div>
         <div class="login-input">&#x1F512; パスワードを入力</div>
         <div class="login-btn">ログイン</div>
@@ -791,7 +795,7 @@
           <div class="icon-circle orange">&#x2699;</div>
           <div>
             <strong>設定</strong><br>
-            <span style="font-size:13px;color:var(--gray-600);">従業員→店舗マッピング、経費分類ルール、ユーザー管理（管理者のみ）。</span>
+            <span style="font-size:13px;color:var(--gray-600);">従業員→店舗マッピング、経費分類ルール、Amazon商品マスタ、ユーザー管理（管理者のみ）。</span>
           </div>
         </div>
       </div>
@@ -817,7 +821,7 @@
       </div>
       <div class="pulldown-item">
         <label>期間</label>
-        <div class="select-mock">4月</div>
+        <div class="select-mock">期（10〜9月）</div>
       </div>
       <div class="pulldown-item">
         <label>店舗</label>
@@ -826,7 +830,10 @@
     </div>
     <div class="info-box note">
       <span class="info-icon">&#x2139;</span>
-      <div>店舗は「東日本橋・春日・船橋・巣鴨・祖師ヶ谷大蔵・下北沢・中目黒・全体」から選べます。<br>「期間」を「年間」にすると年間表示に切り替わります。</div>
+      <div>店舗は「東日本橋・春日・船橋・巣鴨・祖師ヶ谷大蔵・下北沢・中目黒・全体」から選べます。<br>
+        「期間」は以下から選べます:<br>
+        <strong>期（10〜9月）</strong>= 決算期ベースの12ヶ月 / <strong>年間（1〜12月）</strong>= 暦年<br>
+        <strong>上期（1〜6月）</strong> / <strong>下期（7〜12月）</strong> / <strong>各月（1月〜12月）</strong></div>
     </div>
 
     <!-- 月別表示 -->
@@ -869,28 +876,32 @@
     </div>
 
     <p><strong>会員情報セクション</strong></p>
+    <div class="info-box note">
+      <span class="info-icon">&#x2139;</span>
+      <div>
+        <strong>全体ビュー:</strong> 在籍会員数（全社合計）をメインに表示<br>
+        <strong>店舗ビュー:</strong> プラン契約者数（その店舗の月額契約者）をメインに表示
+      </div>
+    </div>
     <div class="member-row">
       <div class="member-stat">
-        <div class="label">在籍数</div>
-        <div class="val">248名</div>
+        <div class="label">プラン契約者数</div>
+        <div class="val">285名</div>
+      </div>
+      <div class="member-stat">
+        <div class="label">新規入会</div>
+        <div class="val">6名</div>
       </div>
       <div class="member-stat">
         <div class="label">退会率</div>
-        <div class="val">3.2%</div>
+        <div class="val">4.4%</div>
       </div>
-      <div class="member-stat" style="min-width:180px;">
-        <div class="label">プラン別会員（円グラフ）</div>
-        <div style="margin-top:8px;">
-          <div class="pie-mock"></div>
-          <div class="pie-legend">
-            <span><span class="dot" style="background:var(--primary);"></span>プランA</span>
-            <span><span class="dot" style="background:#64B5F6;"></span>プランB</span>
-            <span><span class="dot" style="background:#90CAF9;"></span>プランC</span>
-            <span><span class="dot" style="background:var(--primary-light);"></span>その他</span>
-          </div>
-        </div>
+      <div class="member-stat">
+        <div class="label">プラン変更</div>
+        <div class="val">9名</div>
       </div>
     </div>
+    <p style="margin-top:8px;">さらに退会・休会・新規申込の数値と、プラン別会員数の横棒グラフが表示されます。</p>
 
     <!-- 年間表示 -->
     <h3>年間表示</h3>
@@ -932,18 +943,15 @@
         </div>
       </div>
       <div class="graph-box">
-        <div class="graph-title">&#x1F465; 会員推移（月別）</div>
+        <div class="graph-title">&#x1F465; プラン契約者数推移</div>
         <div class="line-chart">
           <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-            <polyline fill="none" stroke="#2196F3" stroke-width="2"
-              points="5,40 20,38 38,35 55,33 72,30 90,28 108,25 125,22 142,20 160,18 178,15 195,12" />
-            <polyline fill="none" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="4,3"
-              points="5,42 20,40 38,38 55,36 72,34 90,32 108,30 125,28 142,26 160,24 178,22 195,20" />
+            <polyline fill="none" stroke="#4CAF50" stroke-width="2"
+              points="5,35 20,38 38,37 55,34 72,30 90,28 108,25 125,22 142,20 160,18 178,15 195,18" />
           </svg>
         </div>
         <div style="font-size:11px;color:var(--gray-600);">
-          <span style="color:#2196F3;">&#x2500; 在籍数</span> &nbsp;
-          <span style="color:#90CAF9;">- - 退会数</span>
+          <span style="color:#4CAF50;">&#x2500; プラン契約者数</span>
         </div>
       </div>
       <div class="graph-box">
@@ -1038,9 +1046,11 @@
     <h3>経費（2ステップ）</h3>
     <div class="flow">
       <div class="flow-title">経費の取込フロー</div>
-      <div class="flow-step file"><span class="step-icon">&#x1F6D2;</span> <strong>STEP1:</strong> Amazon注文履歴CSVをアップロード</div>
+      <div class="flow-step file"><span class="step-icon">&#x1F6D2;</span> <strong>STEP1:</strong> Amazonビジネス注文履歴CSVをアップロード</div>
       <div class="flow-arrow-down"></div>
-      <div class="flow-step action"><span class="step-icon">&#x2699;</span> システムが取込・解析</div>
+      <div class="flow-step action"><span class="step-icon">&#x2699;</span> ASINで商品マスタを照合 → 学習済み商品は自動分類</div>
+      <div class="flow-arrow-down"></div>
+      <div class="flow-step check"><span class="step-icon">&#x26A0;</span> 未学習商品の勘定科目を選択 → 商品マスタに自動学習</div>
       <div class="flow-arrow-down"></div>
       <div class="flow-step file"><span class="step-icon">&#x1F3E6;</span> <strong>STEP2:</strong> PayPay銀行CSVをアップロード</div>
       <div class="flow-arrow-down"></div>
@@ -1211,7 +1221,50 @@
     <h2>予算実績対比の見方</h2>
   </div>
   <div class="card-body">
-    <p>特定の店舗を選択すると、予算と実績の比較テーブルが表示されます。</p>
+    <p>特定の店舗を選択すると、予算と実績の比較が表示されます。</p>
+
+    <h3>達成率KPI（月別・年間共通）</h3>
+    <div class="kpi-row">
+      <div class="kpi-card blue">
+        <div class="label">売上 達成率</div>
+        <div class="value">92%</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="label">人件費 予算比</div>
+        <div class="value">95%</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="label">経費 予算比</div>
+        <div class="value">88%</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="label">営業利益 予算差</div>
+        <div class="value">+¥120K</div>
+      </div>
+    </div>
+
+    <h3>予算vs実績グラフ（年間・期ビュー）</h3>
+    <p>年間や期ビューでは、以下の4つのグラフが月次推移で表示されます。</p>
+    <div class="graphs-grid">
+      <div class="graph-box">
+        <div class="graph-title">売上 予算 vs 実績</div>
+        <div style="font-size:12px;color:var(--gray-600);">グレー=予算、青=実績</div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">営業利益 予算 vs 実績</div>
+        <div style="font-size:12px;color:var(--gray-600);">破線=予算、実線=実績</div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">人件費 予算 vs 実績</div>
+        <div style="font-size:12px;color:var(--gray-600);">グレー=予算、赤=実績</div>
+      </div>
+      <div class="graph-box">
+        <div class="graph-title">経費 予算 vs 実績</div>
+        <div style="font-size:12px;color:var(--gray-600);">グレー=予算、オレンジ=実績</div>
+      </div>
+    </div>
+
+    <h3>予算実績対比テーブル（月別ビュー）</h3>
 
     <div class="table-wrap">
       <table>
@@ -1368,6 +1421,12 @@
             <td class="text-center"><span class="badge-no">&#x2715;</span></td>
           </tr>
           <tr>
+            <td>Amazon商品マスタ管理</td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+            <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
+          </tr>
+          <tr>
             <td>設定画面（従業員マッピング等）</td>
             <td class="text-center"><span class="badge-ok">&#x25CB;</span></td>
             <td class="text-center"><span class="badge-no">&#x2715;</span></td>
@@ -1394,7 +1453,7 @@
 </div><!-- /.container -->
 
 <div style="text-align:center;padding:24px;color:var(--gray-400);font-size:12px;">
-  &copy; High Altitude Management株式会社 &#x2014; PLダッシュボード 使い方説明書
+  &copy; High Altitude Management株式会社 &#x2014; 業績ダッシュボード 使い方説明書
 </div>
 
 </body>
