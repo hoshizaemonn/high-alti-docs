@@ -761,29 +761,38 @@
     <p>左側のサイドバーで3つのページを切り替えます。</p>
 
     <div class="screen-layout">
-      <div class="sidebar-mock">
-        <div class="logo">&#x1F3D4; ハイアルチ</div>
-        <div class="nav-item active">
-          <span class="nav-icon">&#x1F4CA;</span> ダッシュボード
+      <div class="sidebar-mock" style="background:#f8f9fa;color:var(--gray-900);padding:20px 16px;">
+        <!-- Logo -->
+        <div style="text-align:center;margin-bottom:16px;">
+          <div style="display:inline-block;background:#567FC0;border-radius:10px;padding:16px 20px;text-align:center;">
+            <div style="color:#fff;font-weight:700;font-size:15px;letter-spacing:2px;">ハイアルチ</div>
+            <div style="color:rgba(255,255,255,0.85);font-size:10px;margin-top:2px;">駅前高地™トレーニング</div>
+          </div>
         </div>
-        <div class="nav-item">
-          <span class="nav-icon">&#x1F4E4;</span> アップロード
+        <div style="border-top:1px solid var(--gray-300);margin:12px 0;"></div>
+        <!-- User info -->
+        <div style="font-size:13px;margin-bottom:4px;">&#x1F464; <strong>管理者</strong>（管理者）</div>
+        <div style="display:inline-block;border:1px solid var(--gray-300);border-radius:4px;padding:4px 12px;font-size:12px;color:var(--gray-700);margin-bottom:8px;">ログアウト</div>
+        <div style="border-top:1px solid var(--gray-300);margin:12px 0;"></div>
+        <!-- Navigation -->
+        <div class="nav-item active" style="background:none;color:var(--danger);font-weight:600;padding:6px 8px;">
+          <span class="nav-icon" style="color:var(--danger);">&#x25C9;</span> ダッシュボード
         </div>
-        <div class="nav-item">
-          <span class="nav-icon">&#x2699;</span> 設定
+        <div class="nav-item" style="color:var(--gray-700);padding:6px 8px;">
+          <span class="nav-icon" style="color:var(--gray-400);">&#x25CB;</span> アップロード
         </div>
-        <div class="user-info">
-          &#x1F464; 坪井太郎<br>
-          <span style="font-size:11px;">管理者</span><br>
-          <span style="color:#EF9A9A; margin-top:4px; display:inline-block;">ログアウト</span>
+        <div class="nav-item" style="color:var(--gray-700);padding:6px 8px;">
+          <span class="nav-icon" style="color:var(--gray-400);">&#x25CB;</span> 設定
         </div>
+        <div style="border-top:1px solid var(--gray-300);margin:12px 0;"></div>
+        <div style="font-size:11px;color:var(--gray-400);">High-Alti 業績ダッシュボード v1.0</div>
       </div>
       <div class="main-area">
         <div class="page-desc">
           <div class="icon-circle blue">&#x1F4CA;</div>
           <div>
             <strong>ダッシュボード</strong><br>
-            <span style="font-size:13px;color:var(--gray-600);">PL（損益計算書）・会員情報・各種グラフを閲覧。月別/年間表示を切替可能。</span>
+            <span style="font-size:13px;color:var(--gray-600);">PL・会員情報・予算実績対比・各種グラフを閲覧。期/年間/半年/月別表示を切替可能。</span>
           </div>
         </div>
         <div class="page-desc">
