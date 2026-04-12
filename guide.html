@@ -1324,8 +1324,41 @@
       </div>
     </div>
 
-    <h3>予算vs実績グラフ（年間・期ビュー）</h3>
-    <p>年間や期ビューでは、以下の4つのグラフが月次推移で表示されます。</p>
+    <h3>予算vs実績グラフ</h3>
+    <p><strong>月別ビュー</strong>では、科目ごとの横棒グラフが表示されます。</p>
+    <div class="graph-box" style="margin:16px 0;padding:16px;">
+      <div class="graph-title">予算 vs 実績（横棒グラフ）</div>
+      <div style="width:100%;text-align:left;font-size:12px;">
+        <div style="display:flex;align-items:center;gap:6px;margin:4px 0;">
+          <span style="width:120px;text-align:right;font-size:11px;">月会費収入</span>
+          <div style="flex:1;display:flex;gap:2px;">
+            <div style="width:85%;height:16px;background:#B0BEC5;border-radius:3px;"></div>
+            <div style="width:90%;height:16px;background:#4CAF50;border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin:4px 0;">
+          <span style="width:120px;text-align:right;font-size:11px;">正社員・契約社員給与</span>
+          <div style="flex:1;display:flex;gap:2px;">
+            <div style="width:70%;height:16px;background:#B0BEC5;border-radius:3px;"></div>
+            <div style="width:65%;height:16px;background:#F44336;border-radius:3px;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin:4px 0;">
+          <span style="width:120px;text-align:right;font-size:11px;">賃借料</span>
+          <div style="flex:1;display:flex;gap:2px;">
+            <div style="width:50%;height:16px;background:#B0BEC5;border-radius:3px;"></div>
+            <div style="width:55%;height:16px;background:#F44336;border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--gray-600);margin-top:8px;">
+        <span style="color:#B0BEC5;">&#x25A0;</span> 予算 &nbsp;
+        <span style="color:#4CAF50;">&#x25A0;</span> 実績（売上系） &nbsp;
+        <span style="color:#F44336;">&#x25A0;</span> 実績（費用系）
+      </div>
+    </div>
+
+    <p><strong>年間・期ビュー</strong>では、月次推移の棒グラフが4つ表示されます。</p>
     <div class="graphs-grid">
       <div class="graph-box">
         <div class="graph-title">売上 予算 vs 実績</div>
@@ -1419,9 +1452,10 @@
     <div class="info-box note">
       <span class="info-icon">&#x2139;</span>
       <div>
-        <strong>色の見方:</strong><br>
-        <span class="budget-positive">緑色</span> = 予算に対して良い方向（売上が予算超え、経費が予算以下）<br>
-        <span class="budget-negative">赤色</span> = 予算に対して注意が必要（売上が未達、経費が予算超え）
+        <strong>色の見方（予算差・予算比の列）:</strong><br>
+        <span class="budget-positive">緑色</span> = 予算に対して良い方向（売上が予算超え、費用が予算以下）<br>
+        <span class="budget-negative">赤色</span> = 予算に対して注意が必要（売上が未達、費用が予算超え）<br>
+        <small>※ 売上系はプラスが良い（緑）、人件費系・経費系はマイナスが良い（緑）と自動で判定されます</small>
       </div>
     </div>
   </div>
