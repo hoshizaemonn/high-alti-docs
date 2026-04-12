@@ -869,21 +869,12 @@
       </div>
     </div>
 
-    <p><strong>PL表の構造</strong> ― 損益計算書は以下の流れで計算されます。</p>
-    <div class="pl-flow">
-      <div class="pl-flow-item revenue">&#x1F4B0; 売上高（月会費 + パーソナル + オプション）</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-op">ー（マイナス）</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-item labor">&#x1F465; 人件費（正社員給与 + 契約社員給与）</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-op">ー（マイナス）</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-item expense">&#x1F4CB; 経費（各種経費科目の合計）</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-op">＝</div>
-      <div class="pl-flow-arrow"></div>
-      <div class="pl-flow-item profit">&#x2705; 営業利益</div>
+    <p><strong>PL表</strong> ― 売上高・人件費・経費・営業利益を一覧表示します。</p>
+
+    <p><strong>予算実績対比（店舗選択時）</strong></p>
+    <div class="info-box note">
+      <span class="info-icon">&#x2139;</span>
+      <div>特定の店舗を選ぶと、予算と実績の達成率KPI（売上・人件費・経費・営業利益）と予算vs実績の横棒グラフが表示されます。</div>
     </div>
 
     <p><strong>会員情報セクション</strong></p>
@@ -894,25 +885,39 @@
         <strong>店舗ビュー:</strong> プラン契約者数（その店舗の月額契約者）をメインに表示
       </div>
     </div>
-    <div class="member-row">
-      <div class="member-stat">
+    <div class="kpi-row" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="kpi-card">
         <div class="label">プラン契約者数</div>
-        <div class="val">285名</div>
+        <div class="value" style="font-size:18px;">295名</div>
       </div>
-      <div class="member-stat">
+      <div class="kpi-card">
         <div class="label">新規入会</div>
-        <div class="val">6名</div>
+        <div class="value" style="font-size:18px;">17名</div>
       </div>
-      <div class="member-stat">
+      <div class="kpi-card">
         <div class="label">退会率</div>
-        <div class="val">4.4%</div>
+        <div class="value" style="font-size:18px;">4.4%</div>
       </div>
-      <div class="member-stat">
+      <div class="kpi-card">
         <div class="label">プラン変更</div>
-        <div class="val">9名</div>
+        <div class="value" style="font-size:18px;">20名</div>
       </div>
     </div>
-    <p style="margin-top:8px;">さらに退会・休会・新規申込の数値と、プラン別会員数の横棒グラフが表示されます。</p>
+    <div class="kpi-row" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="kpi-card">
+        <div class="label">新規申込</div>
+        <div class="value" style="font-size:18px;">18名</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">退会</div>
+        <div class="value" style="font-size:18px;">13名</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">休会</div>
+        <div class="value" style="font-size:18px;">13名</div>
+      </div>
+    </div>
+    <p style="margin-top:8px;">その下に<strong>プラン別会員数の横棒グラフ</strong>が表示されます。</p>
 
     <!-- 年間表示 -->
     <h3>年間表示</h3>
