@@ -1122,40 +1122,52 @@
     <h2>経費明細の編集・保存</h2>
   </div>
   <div class="card-body">
-    <p>ダッシュボードの経費明細テーブルで、直接編集できます。</p>
+    <p>ダッシュボードの経費明細テーブルで、直接編集できます。金額・勘定科目・内訳が編集可能です。</p>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>日付</th>
+            <th>日</th>
             <th>摘要</th>
-            <th>金額 <span style="color:var(--primary);font-size:11px;">&#x270E; 編集可</span></th>
-            <th>勘定科目 <span style="color:var(--primary);font-size:11px;">&#x270E; 編集可</span></th>
-            <th>内訳 <span style="color:var(--primary);font-size:11px;">&#x270E; 編集可</span></th>
+            <th>金額 <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th>勘定科目 <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th>内訳 <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th style="font-size:12px;">状態</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>25</td>
-            <td>Vデビット AMAZON.CO.JP</td>
+            <td>Vデビット AMAZON.CO.JP 1A056001</td>
             <td style="text-align:right;">¥7,099</td>
             <td style="background:#E3F2FD;">消耗品費</td>
             <td style="background:#E3F2FD;">トランポリン 手すり付き…</td>
+            <td><span style="color:var(--success);font-size:12px;">&#x2714; 自動分類済み</span></td>
           </tr>
-          <tr>
+          <tr style="background:#FFFDE7;">
             <td>27</td>
             <td>AP（BIZIMO）</td>
             <td style="text-align:right;">¥6,717</td>
+            <td style="background:#E3F2FD;">通信費 &#x25BC;</td>
+            <td style="background:#E3F2FD;"></td>
+            <td><span style="color:var(--primary);font-size:12px;">&#x270E; 手動で選択<br>→ 次回から自動</span></td>
+          </tr>
+          <tr>
+            <td>27</td>
+            <td>振込 カ）テレポ</td>
+            <td style="text-align:right;">¥196,350</td>
             <td style="background:#E3F2FD;">通信費</td>
             <td style="background:#E3F2FD;"></td>
+            <td><span style="color:var(--success);font-size:12px;">&#x2714; 自動分類済み</span></td>
           </tr>
           <tr>
             <td>27</td>
             <td>振込 ダイワショウケンオフィストウシホウジン</td>
             <td style="text-align:right;">¥1,424,396</td>
             <td style="background:#FFF8E1;">&#x26A0; 未分類 &#x25BC;</td>
-            <td style="background:#FFF8E1;">&#x26A0; 未入力 &#x25BC;</td>
+            <td style="background:#FFF8E1;">&#x26A0; 未入力</td>
+            <td><span style="color:var(--danger);font-size:12px;">&#x25CF; 要設定</span></td>
           </tr>
         </tbody>
       </table>
@@ -1163,20 +1175,51 @@
 
     <div class="info-box tip">
       <span class="info-icon">&#x1F4A1;</span>
-      <div><strong>自動ルール登録:</strong> 勘定科目を選んで保存すると、同じキーワードの明細に次回から自動適用されます。</div>
+      <div><strong>自動ルール登録:</strong> 勘定科目を選んで「保存」すると、同じキーワードの明細に次回から自動適用されます。毎月の手動分類がどんどん減っていきます。</div>
     </div>
 
     <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
-      <span style="background:var(--primary);color:#fff;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;">&#x1F4BE; 保存</span>
+      <span style="background:var(--primary);color:#fff;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;">&#x1F4BE; 変更を保存</span>
       <span style="color:var(--gray-600);font-size:13px;">保存すると自動ルールも登録され、過去データにも反映</span>
     </div>
-    <div class="info-box note" style="margin-top:8px;">
-      <span class="info-icon">&#x2139;</span>
-      <div><strong>例:</strong> 2月分で「BIZIMO」に「通信費」を設定して保存 → 3月分を取り込んだ時に「BIZIMO」が含まれる明細は自動で「通信費」に分類されます。毎月の手動分類がどんどん減っていきます。</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
-      <span style="background:var(--gray-700);color:#fff;padding:8px 16px;border-radius:6px;font-size:14px;font-weight:600;">&#x1F4E5; CSVダウンロード</span>
-      <span style="color:var(--gray-600);font-size:13px;">経費明細をCSV形式で書き出し可能</span>
+
+    <h3 style="margin-top:24px;">CSVダウンロード</h3>
+    <p>「📥 経費明細をダウンロード（CSV）」ボタンで、以下の形式のCSVが出力されます。</p>
+    <div class="download-area">
+      <div class="dl-btn-mock" style="background:var(--gray-700);">&#x1F4E5; 経費明細をダウンロード（CSV）</div>
+      <div class="dl-arrow">&#x2192;</div>
+      <div class="excel-mock" style="border-color:var(--gray-600);">
+        <div class="excel-header" style="background:var(--gray-600);">&#x1F4C4; 202602_東日本橋_経費明細.csv</div>
+        <table style="font-size:11px;width:100%;">
+          <tr style="background:var(--gray-100);">
+            <th style="padding:3px 5px;border:1px solid #ccc;">年</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">月</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">日</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">摘要</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">金額</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">勘定科目</th>
+            <th style="padding:3px 5px;border:1px solid #ccc;">内訳</th>
+          </tr>
+          <tr>
+            <td style="padding:3px 5px;border:1px solid #eee;">2026</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">2</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">25</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">Vデビット AMAZON</td>
+            <td style="padding:3px 5px;border:1px solid #eee;text-align:right;">7,099</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">消耗品費</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">トランポリン…</td>
+          </tr>
+          <tr>
+            <td style="padding:3px 5px;border:1px solid #eee;">2026</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">2</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">27</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">AP（BIZIMO）</td>
+            <td style="padding:3px 5px;border:1px solid #eee;text-align:right;">6,717</td>
+            <td style="padding:3px 5px;border:1px solid #eee;">通信費</td>
+            <td style="padding:3px 5px;border:1px solid #eee;"></td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>
