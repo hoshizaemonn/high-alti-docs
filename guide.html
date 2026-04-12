@@ -1665,12 +1665,58 @@
 
     <h3>ユーザー管理（管理者のみ）</h3>
     <p>管理者アカウントでログインした場合のみ表示されるタブです。</p>
-    <ul style="font-size:14px;color:var(--gray-700);margin:8px 0 8px 20px;">
-      <li><strong>登録ユーザー一覧</strong> — 全ユーザーの一覧表示（ユーザー名・表示名・権限・担当店舗）</li>
-      <li><strong>ユーザー削除</strong> — 管理者以外のユーザーを削除（管理者は削除不可）</li>
-      <li><strong>店舗マネージャー追加</strong> — 新しい店長アカウントを作成（ユーザー名・パスワード・表示名・担当店舗）</li>
-    </ul>
-    <div class="info-box warn">
+
+    <p><strong>登録ユーザー一覧</strong></p>
+    <div class="table-wrap" style="margin:8px 0;">
+      <table style="font-size:13px;">
+        <thead>
+          <tr>
+            <th style="width:40px;">ID</th>
+            <th>ユーザー名</th>
+            <th>表示名</th>
+            <th>権限</th>
+            <th>担当店舗</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>admin</td><td>管理者</td><td>管理者</td><td></td></tr>
+          <tr><td>2</td><td>higashinihonbashi</td><td>東日本橋 店長</td><td>店舗マネージャー</td><td>東日本橋</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>ユーザー削除</strong></p>
+    <div class="info-box note" style="margin:8px 0;">
+      <span class="info-icon">&#x2139;</span>
+      <div>削除可能なユーザーはありません（管理者は削除不可）</div>
+    </div>
+
+    <p><strong>店舗マネージャー追加</strong></p>
+    <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:12px;font-size:12px;">
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <div style="color:var(--gray-600);margin-bottom:2px;">ユーザー名</div>
+          <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;"></div>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <div style="color:var(--gray-600);margin-bottom:2px;">表示名</div>
+          <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;">
+          <div style="color:var(--gray-600);margin-bottom:2px;">パスワード</div>
+          <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;color:var(--gray-400);">&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;</div>
+        </div>
+        <div style="flex:1;min-width:140px;">
+          <div style="color:var(--gray-600);margin-bottom:2px;">担当店舗</div>
+          <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;">東日本橋 &#x25BC;</div>
+        </div>
+      </div>
+      <span style="background:var(--danger);color:#fff;padding:5px 16px;border-radius:4px;font-size:12px;font-weight:600;">追加</span>
+    </div>
+
+    <div class="info-box warn" style="margin-top:12px;">
       <span class="info-icon">&#x1F512;</span>
       <div>この機能は<strong>管理者アカウント</strong>でのみ利用可能です。店舗マネージャーには表示されません。</div>
     </div>
