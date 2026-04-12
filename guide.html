@@ -699,7 +699,8 @@
     <li><a href="#sec5">経費明細の編集・保存</a></li>
     <li><a href="#sec6">人件費サマリExcelダウンロード</a></li>
     <li><a href="#sec7">予算実績対比の見方</a></li>
-    <li><a href="#sec8">権限の違い（管理者 vs 店長）</a></li>
+    <li><a href="#sec8">設定画面の使い方</a></li>
+    <li><a href="#sec9">権限の違い（管理者 vs 店長）</a></li>
   </ol>
   <div style="margin-top:16px;padding:12px 16px;background:#E8F5E9;border-radius:8px;font-size:14px;">
     &#x1F3AC; <strong>操作動画</strong>: <a href="https://hoshizaemonn.github.io/high-alti-docs/guide.html" style="color:var(--primary);">こちらから操作動画も確認できます</a>
@@ -1064,10 +1065,6 @@
       <div class="flow-title">経費の取込フロー</div>
       <div class="flow-step file"><span class="step-icon">&#x1F6D2;</span> <strong>STEP1:</strong> Amazonビジネス注文履歴CSVをアップロード</div>
       <div class="flow-arrow-down"></div>
-      <div class="flow-step action"><span class="step-icon">&#x2699;</span> ASINで商品マスタを照合 → 学習済み商品は自動分類</div>
-      <div class="flow-arrow-down"></div>
-      <div class="flow-step check"><span class="step-icon">&#x26A0;</span> 未学習商品の勘定科目を選択 → 商品マスタに自動学習</div>
-      <div class="flow-arrow-down"></div>
       <div class="flow-step file"><span class="step-icon">&#x1F3E6;</span> <strong>STEP2:</strong> PayPay銀行CSVをアップロード</div>
       <div class="flow-arrow-down"></div>
       <div class="flow-step action"><span class="step-icon">&#x2699;</span> キーワードルールで自動分類</div>
@@ -1363,9 +1360,45 @@
 </div>
 
 <!-- ===== 8. 権限マトリクス ===== -->
+<!-- ===== 8. 設定画面の使い方 ===== -->
 <div class="card" id="sec8">
   <div class="card-header">
     <span class="num">8</span>
+    <h2>設定画面の使い方</h2>
+  </div>
+  <div class="card-body">
+    <p>「設定」ページには3つのタブがあります（管理者はユーザー管理タブも表示）。</p>
+
+    <h3>従業員→店舗マッピング</h3>
+    <p>従業員番号と店舗の紐付けを管理します。通常は従業員番号の千の位で自動判定されますが、兼務や例外はここで設定します。</p>
+    <div class="info-box tip">
+      <span class="info-icon">&#x1F4A1;</span>
+      <div>「未登録従業員を一括登録」ボタンで、給与データに含まれる全従業員をまとめて登録できます。</div>
+    </div>
+
+    <h3>経費分類ルール</h3>
+    <p>PayPay銀行CSVの「摘要」に含まれるキーワードで、勘定科目を自動判定するルールを設定します。</p>
+
+    <h3>Amazon商品マスタ</h3>
+    <p>Amazonで購入した商品のASIN（商品コード）と勘定科目の紐付けを管理します。</p>
+    <div class="info-box note">
+      <span class="info-icon">&#x2139;</span>
+      <div>
+        <strong>自動学習:</strong> 経費の取込時にAmazon CSVをアップロードすると、商品マスタに自動で登録されます。次回以降、同じ商品は自動で同じ勘定科目が割り当てられます。
+      </div>
+    </div>
+    <div class="info-box tip">
+      <span class="info-icon">&#x1F4A1;</span>
+      <div>
+        <strong>過去データの一括登録:</strong> 過去1〜3年分のAmazon注文履歴CSVを「📥 注文履歴CSVから一括登録」からアップロードすると、商品マスタにまとめて登録できます。毎月の経費取込がほぼ自動になります。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="sec9">
+  <div class="card-header">
+    <span class="num">9</span>
     <h2>権限の違い（管理者 vs 店長）</h2>
   </div>
   <div class="card-body">
