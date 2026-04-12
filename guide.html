@@ -1511,7 +1511,31 @@
     <p>「設定」ページには3つのタブがあります（管理者はユーザー管理タブも表示）。</p>
 
     <h3>従業員→店舗マッピング</h3>
-    <p>従業員番号と店舗の紐付けを管理します。通常は従業員番号の千の位で自動判定されますが、兼務や例外はここで設定します。</p>
+    <p>従業員番号と店舗の紐付けを管理します。通常は従業員番号の千の位で自動判定されますが、兼務や例外はここで設定します。登録済みの従業員の店舗や比率の変更・削除もできます。</p>
+
+    <div class="table-wrap" style="margin:12px 0;">
+      <table style="font-size:13px;">
+        <thead>
+          <tr>
+            <th>従業員番号</th>
+            <th>氏名</th>
+            <th>店舗 <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th>比率(%) <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th style="width:60px;">削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>4005</td><td>山田 太郎</td><td style="background:#E3F2FD;">春日 &#x25BC;</td><td style="background:#E3F2FD;">60</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>4005</td><td>山田 太郎</td><td style="background:#E3F2FD;">巣鴨 &#x25BC;</td><td style="background:#E3F2FD;">40</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>5007</td><td>鈴木 花子</td><td style="background:#E3F2FD;">東日本橋 &#x25BC;</td><td style="background:#E3F2FD;">100</td><td class="text-center">&#x2610;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <span style="background:var(--danger);color:#fff;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;">&#x1F4BE; 変更を保存</span>
+      <span style="font-size:12px;color:var(--gray-600);">店舗・比率の変更、削除チェックの反映</span>
+    </div>
+
     <div class="info-box tip">
       <span class="info-icon">&#x1F4A1;</span>
       <div>「未登録従業員を一括登録」ボタンで、給与データに含まれる全従業員をまとめて登録できます。</div>
@@ -1569,7 +1593,44 @@
     </div>
 
     <h3>経費分類ルール</h3>
-    <p>PayPay銀行CSVの「摘要」に含まれるキーワードで、勘定科目を自動判定するルールを設定します。</p>
+    <p>PayPay銀行CSVの「摘要」に含まれるキーワードで、勘定科目を自動判定するルールを設定します。既存ルールの変更・削除も可能です。</p>
+
+    <div class="table-wrap" style="margin:12px 0;">
+      <table style="font-size:13px;">
+        <thead>
+          <tr>
+            <th>キーワード</th>
+            <th>勘定科目 <span style="color:var(--primary);font-size:11px;">&#x270E;</span></th>
+            <th style="width:60px;">削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>ネットプロテクションズ</td><td>支払手数料</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>プリントパック</td><td>広告宣伝費</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>AMAZON</td><td>消耗品費</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>BIZIMO</td><td style="background:#E3F2FD;">通信費 &#x25BC;</td><td class="text-center">&#x2610;</td></tr>
+          <tr><td>SMBC</td><td>委託料</td><td class="text-center">&#x2610;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+      <span style="background:var(--danger);color:#fff;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;">&#x1F4BE; 変更を保存</span>
+    </div>
+
+    <p><strong>新規ルール追加</strong></p>
+    <div style="display:flex;gap:8px;align-items:flex-end;padding:12px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;flex-wrap:wrap;">
+      <div style="flex:2;min-width:140px;">
+        <div style="font-size:12px;color:var(--gray-600);margin-bottom:4px;">キーワード</div>
+        <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;font-size:13px;color:var(--gray-400);">例: テレポ</div>
+      </div>
+      <div style="flex:2;min-width:140px;">
+        <div style="font-size:12px;color:var(--gray-600);margin-bottom:4px;">勘定科目</div>
+        <div style="background:#fff;border:1px solid var(--gray-300);border-radius:4px;padding:6px 10px;font-size:13px;">消耗品費 &#x25BC;</div>
+      </div>
+      <div>
+        <span style="background:var(--danger);color:#fff;padding:6px 14px;border-radius:4px;font-size:13px;font-weight:600;">追加</span>
+      </div>
+    </div>
 
     <h3>Amazon商品マスタ</h3>
     <p>Amazonで購入した商品のASIN（商品コード）と勘定科目の紐付けを管理します。</p>
